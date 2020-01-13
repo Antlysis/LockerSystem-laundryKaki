@@ -1,11 +1,6 @@
 const mongoose = require('mongoose');
 
 var KeysSchema = new mongoose.Schema({
-  clientName: { 
-    type: String,
-    required: true, 
-    ref: 'Operator' 
-  },
   clientSecret: { 
     type: String,
     required: true, 
