@@ -48,6 +48,11 @@
   "paths": {
     "/lockers/{action_code}/outlet/{outlet_id}": {
       "get": {
+        "security": [
+          {
+            "basicAuth": []
+          }
+        ],
         "tags": [
           "Locker"
         ],
@@ -96,17 +101,14 @@
             "description": "Invalid status value",
             "content": {}
           }
-        },
-        "security": [
-          {
-            "petstore_auth": [
-              "write:pets",
-              "read:pets"
-            ]
-          }
-        ]
+        }
       },
       "post": {
+        "security": [
+          {
+            "basicAuth": []
+          }
+        ],
         "tags": [
           "Locker"
         ],
@@ -131,26 +133,14 @@
             "required": "true",
             "schema": {
               "type": "string"
-            }
+            },
+            "example": "TamanSungaiBesi"
           }
         ],
         "requestBody": {
-          "description":"Find out more on",
-          "content": {
-            "application/json":{
-              "schema": {
-                "$ref": "#/components/schemas/Lockers"
-              },
-              "example": {
-                "value": {
-                  "UserOpen": "Command for user to open the door",
-                  "OpenAll": "Command to open all the doors",
-                  "StaffOpen": "Command for staff to open whichever not washed",
-                  "RiderOpen": "Command for rider to open whichever cleaned",
-                  "StaffDeposit": "Command for staff to open whichever empty"
-                }
-              }
-            }
+          "$ref": "#/components/requestBodies/LockerBody",
+          "example": {
+            "$ref": "#/components/examples/LockerBody"
           }
         },
         "responses": {
@@ -158,19 +148,13 @@
             "description": "successful operation",
             "content": {
               "application/xml": {
-                "schema": {
-                  "type": "object",
-                  "items": {
-                    "$ref": "#/components/schemas/Lockers"
-                  }
+                "schema": {                
+                  "$ref": "#/components/schemas/Lockers"                  
                 }
               },
               "application/json": {
-                "schema": {
-                  "type": "object",
-                  "items": {
-                    "$ref": "#/components/schemas/Lockers"
-                  }
+                "schema": {                  
+                  "$ref": "#/components/schemas/Lockers"                  
                 }
               }
             }
@@ -179,19 +163,16 @@
             "description": "Invalid status value",
             "content": {}
           }
-        },
-        "security": [
-          {
-            "petstore_auth": [
-              "write:pets",
-              "read:pets"
-            ]
-          }
-        ]
+        }
       }
     },
     "/lockers/{lockers_id}": {
       "get": {
+        "security": [
+          {
+            "basicAuth": []
+          }
+        ],
         "tags": [
           "Locker"
         ],
@@ -204,18 +185,12 @@
             "content": {
               "application/xml": {
                 "schema": {
-                  "type": "object",
-                  "items": {
-                    "$ref": "#/components/schemas/Lockers"
-                  }
+                  "$ref": "#/components/schemas/Lockers"                  
                 }
               },
               "application/json": {
-                "schema": {
-                  "type": "object",
-                  "items": {
-                    "$ref": "#/components/schemas/Lockers"
-                  }
+                "schema": {                  
+                  "$ref": "#/components/schemas/Lockers"                  
                 }
               }
             }
@@ -224,29 +199,65 @@
             "description": "Invalid status value",
             "content": {}
           }
-        },
-        "security": [
-          {
-            "petstore_auth": [
-              "write:pets",
-              "read:pets"
-            ]
-          }
-        ]
+        }
       }
     },
-    "/scale/{scale_id}":{
+    "/scale/{action_code}":{
       "get":{
+        "security": [
+          {
+            "basicAuth": []
+          }
+        ],
         "tags": [
           "Scale"
         ],
         "summary": "Get locker status",
         "description": "Multiple status values can be provided with comma separated strings",
-        "operationId": "getScaleStatus"
+        "operationId": "getScaleStatus",
+        "parameters": [
+          {
+            "name": "action_code",
+            "in": "path",
+            "description": "Action code for information",
+            "required": "true",
+            "schema": {
+              "type": "string",
+              "enum": ["GetAll"]
+            },
+            "example": "GetAll"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/xml": {
+                "schema": {                  
+                  "$ref": "#/components/schemas/Scale"                  
+                }
+              },
+              "application/json": {
+                "schema": {                  
+                  "$ref": "#/components/schemas/Scale"                  
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid status value",
+            "content": {}
+          }
+        }
       }
     },
     "/payment/{action_code}":{
       "get":{
+        "security": [
+          {
+            "basicAuth": []
+          }
+        ],
         "tags": [
           "Payment"
         ],
@@ -282,6 +293,11 @@
         }
       },
       "post": {
+        "security": [
+          {
+            "basicAuth": []
+          }
+        ],
         "tags": [
           "Payment"
         ],
@@ -314,7 +330,6 @@
           "example": {
             "$ref": "#/components/examples/PaymentBody"
           }
-
         },
         "responses": {
           "200": {
@@ -322,18 +337,12 @@
             "content": {
               "application/xml": {
                 "schema": {
-                  "type": "object",
-                  "items": {
-                    "$ref": "#/components/schemas/Payment"
-                  }
+                  "$ref": "#/components/schemas/Payment"                  
                 }
               },
               "application/json": {
-                "schema": {
-                  "type": "object",
-                  "items": {
-                    "$ref": "#/components/schemas/Payment"
-                  }
+                "schema": {                  
+                  "$ref": "#/components/schemas/Payment"                  
                 }
               }
             }
@@ -378,7 +387,7 @@
             ],
             "example": "zero"
           },
-          "complete": {
+          "stable": {
             "type": "boolean",
             "default": false,
             "example": "false"
@@ -636,6 +645,22 @@
             }
           }
         }
+      },
+      "LockerBody": {
+        "description": "Find out more",
+        "required": "true",
+        "content":{
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Lockers"
+            }
+          },
+          "application/xml": {
+            "schema": {
+              "$ref": "#/components/schemas/Lockers"
+            }
+          }
+        }
       }
     },
     "examples": {
@@ -686,26 +711,30 @@
           "MagStripe": "02",
           "ManualPanEntery": "03"
         }
+      },
+      "LockerBody": {
+        "_id": "5df620ea0205b92ea96c82ec",
+        "name": "locker4",
+        "bitmask": 2048,
+        "lock": false,
+        "empty": false,
+        "create_date": "2019-12-25T13:13:03.730Z",
+        "outlet": {
+          "location": "TamanSungaiBesi",
+          "brand": "WashStudio"
+        }
       }
     },
     "securitySchemes": {
-      "petstore_auth": {
-        "type": "oauth2",
-        "flows": {
-          "implicit": {
-            "authorizationUrl": "http://petstore.swagger.io/oauth/dialog",
-            "scopes": {
-              "write:pets": "modify pets in your account",
-              "read:pets": "read your pets"
-            }
-          }
-        }
-      },
-      "api_key": {
-        "type": "apiKey",
-        "name": "api_key",
-        "in": "header"
+      "basicAuth": {
+        "type": "http",
+        "scheme": "basic"
       }
-    }
+    },
+    "security": [
+      {
+        "basicAuth": []
+      }
+    ]
   }
 }

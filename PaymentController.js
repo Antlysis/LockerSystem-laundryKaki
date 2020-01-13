@@ -1,34 +1,43 @@
+const base64 =  require('base-64');
+
 //Payment controller
 Payments = require('./PaymentModel');
+Keys = require('./KeyModel');
 TCPServicePayloadResponse = require('./PaymentModel');
 
 // Handle index actions
 exports.index = function (req, res) {
     try{
-        var ApiParameters = req.params,
-            ApiBody = req.body,
-            ApiQuery = req.query;
-        console.log(ApiParameters);
-        if (ApiParameters.action_code == "PaymentRequest"){
-            console.log("Initiate PaymentRequest");
+        authenticate(req, res, function(err, apiClient) {
+            if(err) {
+                return res.status(400).send(err)
+            } else if(!err && apiClient) {
+                var ApiParameters = req.params,
+                    ApiBody = req.body,
+                    ApiQuery = req.query;
+                console.log(ApiParameters);
+                if (ApiParameters.action_code == "PaymentRequest"){
+                    console.log("Initiate PaymentRequest");
 
-            res.status(200).send('Receive action code');
-        } else if (ApiParameters.action_code == "PaymentStatus"){
-            console.log("Initiate PaymentStatus");
+                    res.status(200).send('Receive action code');
+                } else if (ApiParameters.action_code == "PaymentStatus"){
+                    console.log("Initiate PaymentStatus");
 
-            res.status(200).send('Receive action code');
-        } else if (ApiParameters.action_code == "VoidPayment"){
-            console.log("Initiate VoidPayment");
+                    res.status(200).send('Receive action code');
+                } else if (ApiParameters.action_code == "VoidPayment"){
+                    console.log("Initiate VoidPayment");
 
-            res.status(200).send('Receive action code');            
-        } else {
-            res.json({
-                status: "success",
-                message: "Incorrect action code"
-            });
-        }
-        console.log(ApiBody)
-        console.log("query: ",ApiQuery);
+                    res.status(200).send('Receive action code');            
+                } else {
+                    res.json({
+                        status: "success",
+                        message: "Incorrect action code"
+                    });
+                }
+                console.log(ApiBody)
+                console.log("query: ",ApiQuery);
+            }
+        })
     } catch(err){
         next(err);
     } 
@@ -36,43 +45,56 @@ exports.index = function (req, res) {
 
 // Handle view locker info
 exports.view = function (req, res) {
-    Payments.findById(req.params.payment_id, function (err, payment) {
-        if (err)
-            res.send(err);
-        res.json({
-            message: 'Locker details loading..',
-            data: payment
-        });
-    });
+    authenticate(req, res, function(err, apiClient) {
+        if(err) {
+            return res.status(400).send(err)
+        } else if(!err && apiClient) {
+            Payments.findById(req.params.payment_id, function (err, payment) {
+                if (err)
+                    res.send(err);
+                res.json({
+                    message: 'Locker details loading..',
+                    data: payment
+                });
+            });
+        }
+    })
 };
 
 exports.command = function (req, res){
     try{
-        var ApiParameters = req.params,
-            ApiBody = req.body,
-            ApiQuery = req.query;
-        console.log(ApiParameters);
-        if (ApiParameters.action_code == "PaymentRequest"){
-            console.log("Initiate PaymentRequest");
+        authenticate(req, res, function(err, apiClient) {
+            if(err) {
+                return res.status(400).send(err)
+            } else if(!err && apiClient) {
+                var ApiParameters = req.params,
+                    ApiBody = req.body,
+                    ApiQuery = req.query;
+                console.log(ApiParameters);
+                if (ApiParameters.action_code == "PaymentRequest"){
+                    console.log("Initiate PaymentRequest");
 
-            res.status(200).send('Receive action code');
-        } else if (ApiParameters.action_code == "PaymentStatus"){
-            console.log("Initiate PaymentStatus");
+                    res.status(200).send('Receive action code');
+                } else if (ApiParameters.action_code == "PaymentStatus"){
+                    console.log("Initiate PaymentStatus");
 
-            res.status(200).send('Receive action code');
-        } else if (ApiParameters.action_code == "VoidPayment"){
-            console.log("Initiate VoidPayment");
+                    res.status(200).send('Receive action code');
+                } else if (ApiParameters.action_code == "VoidPayment"){
+                    console.log("Initiate VoidPayment");
 
-            res.status(200).send('Receive action code');            
-        } else {
-            res.json({
-                status: "success",
-                message: "Incorrect action code"
-            });
-        }
-        SaleRequest.PaymentType = ApiQuery.PaymentType;
-        console.log(ApiBody)
-        console.log("query: ",ApiQuery);
+                    res.status(200).send('Receive action code');            
+                } else {
+                    res.json({
+                        status: "success",
+                        message: "Incorrect action code"
+                    });
+                }
+                SaleRequest.PaymentType = ApiQuery.PaymentType;
+                console.log(ApiBody)
+                console.log("query: ",ApiQuery);
+            }
+
+        })
     } catch(err){
         next(err);
     } 
@@ -80,18 +102,49 @@ exports.command = function (req, res){
 
 // Handle create contact actions
 exports.new = function (req, res) {
-    var payments = new Payments();
-    payments.name = req.body.name ? req.body.name : contact.name;
-    // payments.gender = req.body.gender;
-    // payments.email = req.body.email;
-    // payments.phone = req.body.phone;// save the payments and check for errors
-    payments.save(function (err) {
-        res.json({
-            message: 'New payments created!',
-            data: payments
-        }); 
-    });   
+    authenticate(req, res, function(err, apiClient) {
+        if(err) {
+            return res.status(400).send(err)
+        } else if(!err && apiClient) {
+            var payments = new Payments();
+            payments.name = req.body.name ? req.body.name : contact.name;
+            // payments.gender = req.body.gender;
+            // payments.email = req.body.email;
+            // payments.phone = req.body.phone;// save the payments and check for errors
+            payments.save(function (err) {
+                res.json({
+                    message: 'New payments created!',
+                    data: payments
+                }); 
+            });
+        }
+    })
 };
+
+function authenticate(req, res, callback) {
+  var pat1 = /Basic ([0-9a-zA-Z]+)/g
+  var pat2 = /([0-9a-zA-Z]+):([0-9a-zA-Z]+)/g
+  // console.log(req.headers.authorization)
+  var code = req.headers.authorization.replace(pat1, "$1")
+  var data = base64.decode(code)
+  var clientid = data.replace(pat2, "$1")
+  var clientSecret = data.replace(pat2, "$2")
+  if(!clientid) {
+    msg.status = "Missing Client ID"
+    return res.status(400).send(msg)
+  } else if (!clientSecret) {
+    msg.status = "Missing Client Secret"
+    return res.status(400).send(msg)
+  }
+  Keys.authenticate(clientid, clientSecret, function(error, apiClient) {
+    if(apiClient) {
+        callback(null, apiClient)
+    } else {
+        console.log(error)
+        callback(error)
+    }
+  })
+}
 
 var SaleRequest = {
     "ActionCode": { },

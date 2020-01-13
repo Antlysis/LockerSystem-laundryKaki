@@ -19,10 +19,6 @@ var lockerSchema = mongoose.Schema({
     required: true
   },
   outlet: {
-    type: String,
-    required: true
-  },
-  outlet: {
     type: Object,
     required: true
   },

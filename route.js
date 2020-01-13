@@ -27,7 +27,7 @@ router.route('/lockers/:lockers_id/outlet/:outlet_id')
 router.route('/scale/:action_code')
     .get(scaleController.index);
     
-router.route('/scale/:scale_id')
+router.route('/scale/:action_code')
     .get(scaleController.view);
 
 // Payment routes
