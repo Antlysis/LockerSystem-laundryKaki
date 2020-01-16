@@ -46,25 +46,25 @@ exports.index = function (req, res, next) {
 };
 
 function authenticate(req, res, callback) {
-  var pat1 = /Basic ([0-9a-zA-Z]+)/g
-  var pat2 = /([0-9a-zA-Z]+):([0-9a-zA-Z]+)/g
+  var pat1 = /Basic ([0-9a-zA-Z]+)/g;
+  var pat2 = /([0-9a-zA-Z]+):([0-9a-zA-Z]+)/g;
   // console.log(req.headers.authorization)
-  var code = req.headers.authorization.replace(pat1, "$1")
-  var data = base64.decode(code)
-  var clientid = data.replace(pat2, "$1")
-  var clientSecret = data.replace(pat2, "$2")
+  var code = req.headers.authorization.replace(pat1, "$1");
+  var data = base64.decode(code);
+  var clientid = data.replace(pat2, "$1");
+  var clientSecret = data.replace(pat2, "$2");
   if(!clientid) {
-    msg.status = "Missing Client ID"
+    msg.status = "Missing Client ID";
     return res.status(400).send(msg)
   } else if (!clientSecret) {
-    msg.status = "Missing Client Secret"
+    msg.status = "Missing Client Secret";
     return res.status(400).send(msg)
   }
   Keys.authenticate(clientid, clientSecret, function(error, apiClient) {
     if(apiClient) {
-        callback(null, apiClient)
+        callback(null, apiClient);
     } else {
-        console.log(error)
+        console.log(error);
         callback(error)
     }
   })
@@ -86,31 +86,31 @@ exports.command = (req, res, next) => {
                     ApiBody = req.body,
                     ApiQuery = req.query;
                 console.log(ApiParameters);
-                if (ApiParameters.action_code == "UserOpen" && ApiParameters.outlet_id == Outlet){
+                if (ApiParameters.action_code == "UserOpen" && ApiParameters.outlet_id == Outlet.location){
                     console.log("Initiate UserOpen ");
                     lock(OPEN,ApiQuery.locker);
                     nodeClient.write(hexVal); 
 
                     res.status(200).send('Receive action code');
-                } else if (ApiParameters.action_code == "OpenAll" && ApiParameters.outlet_id == Outlet){
+                } else if (ApiParameters.action_code == "OpenAll" && ApiParameters.outlet_id == Outlet.location){
                     console.log("Initiate OpenAll");
                     lock(OPEN,ApiQuery.locker);
                     nodeClient.write(hexVal); 
 
                     res.status(200).send('Receive action code');
-                } else if (ApiParameters.action_code == "StaffOpen" && ApiParameters.outlet_id == Outlet){
+                } else if (ApiParameters.action_code == "StaffOpen" && ApiParameters.outlet_id == Outlet.location){
                     console.log("Initiate StaffOpen");
                     lock(OPEN,ApiQuery.locker);
                     nodeClient.write(hexVal); 
 
                     res.status(200).send('Receive action code');            
-                } else if (ApiParameters.action_code == "RiderOpen" && ApiParameters.outlet_id == Outlet){
+                } else if (ApiParameters.action_code == "RiderOpen" && ApiParameters.outlet_id == Outlet.location){
                     console.log("RiderOpen");
                     lock(OPEN,ApiQuery.locker);
                     nodeClient.write(hexVal); 
 
                     res.status(200).send('Receive action code');            
-                } else if (ApiParameters.action_code == "StaffDeposit" && ApiParameters.outlet_id == Outlet){
+                } else if (ApiParameters.action_code == "StaffDeposit" && ApiParameters.outlet_id == Outlet.location){
                     console.log("Initiate StaffDeposit ");
                     lock(OPEN,ApiQuery.locker);
                     nodeClient.write(hexVal); 
