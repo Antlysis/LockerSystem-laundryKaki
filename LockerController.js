@@ -38,7 +38,7 @@ exports.index = asyncMiddleware(async (req, res, next) => {
                     let status = false
                     OnData.on('code', (data)=>{
                         status = true
-                        res.status(200).send({data})
+                        res.status(200).send(data)
                         OnData.removeAllListeners('code');
                     })
 
@@ -127,22 +127,7 @@ exports.command = asyncMiddleware(async (req, res, next) =>  {
                     ApiBody = req.body,
                     ApiQuery = req.query;
                 console.log(ApiParameters);
-                if (ApiParameters.action_code == "OpenOne"){
-                    console.log("Initiate OpenOne");
-
-                                      
-                    nodeClient = getConn('Node');                
-                    var UOLocker = lockerStatus.findIndex(status => {
-                        if (status.name == Object.keys(ApiBody) && status.lock == !(Object.values(ApiBody) == 'false')){
-                            return true;                            
-                        } else false;                    
-                    });
-                    console.log("Locker result: "+UOLocker);                    
-                    lock(OPEN, UOLocker);                    
-                    nodeClient.write(hexVal); 
-
-                    // res.status(200).send('Receive action code');
-                } else if (ApiParameters.action_code == "OpenMultiple" ){
+                if (ApiParameters.action_code == "Open" ){
                     console.log("Initiate OpenMultiple");
 
                     nodeClient = getConn('Node'); 

@@ -77,7 +77,6 @@
             "name": "outlet_id",
             "in": "path",
             "description": "Outlet ID for information",
-            "required": "true",
             "schema": {
               "type": "string"
             },
@@ -90,19 +89,21 @@
             "content": {
               "application/xml": {
                 "schema": {                  
-                  "$ref": "#/components/schemas/Lockers"                  
+                  "$ref": "#/components/schemas/LockersResponse"                  
                 }
               },
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Lockers"                  
+                  "$ref": "#/components/schemas/LockersResponse"                  
                 }
               }
             }
           },
           "400": {
-            "description": "Invalid status value",
-            "content": {}
+            "description": "**Invalid** status value"
+          },
+          "502": {
+            "description": "Request *timeout*"
           }
         }
       },
@@ -125,15 +126,14 @@
             "required": "true",
             "schema": {
               "type": "string",
-              "enum": ["OpenOne","OpenMultiple","NewOutlet"]
+              "enum": ["Open","NewOutlet"]
             },
-            "example": "UserOpen"
+            "example": "Open"
           },
           {
             "name": "outlet_id",
             "in": "path",
             "description": "Outlet ID for information",
-            "required": "true",
             "schema": {
               "type": "string"
             },
@@ -148,67 +148,7 @@
         },
         "responses": {
           "200": {
-            "description": "successful operation",
-            "content": {
-              "application/xml": {
-                "schema": {                
-                  "$ref": "#/components/schemas/Lockers"                  
-                }
-              },
-              "application/json": {
-                "schema": {                  
-                  "$ref": "#/components/schemas/Lockers"                  
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid status value",
-            "content": {}
-          }
-        }
-      }
-    },
-    "/locker/{lockers_name}": {
-      "get": {
-        "security": [
-          {
-            "basicAuth": []
-          }
-        ],
-        "tags": [
-          "Locker"
-        ],
-        "parameters": [
-          {
-            "name": "Name",
-            "in": "path",
-            "description": "lockers name",
-            "required": "true",
-            "schema": {
-              "type": "string"      
-            },
-            "example": "locker1"            
-          }
-        ],
-        "summary": "Get locker status by Name",
-        "description": "Multiple status values can be provided with comma separated strings",
-        "operationId": "getLockerStatusByName",
-        "responses": {
-          "200": {
-            "description": "successful operation",
-            "content": {
-              "application/xml": {
-                "schema": {
-                  "$ref": "#/components/schemas/Lockers"                  
-                }
-              },
-              "application/json": {
-                "schema": {                  
-                  "$ref": "#/components/schemas/Lockers"                  
-                }
-              }
-            }
+            "description": "successful operation"
           },
           "400": {
             "description": "Invalid status value",
@@ -448,41 +388,50 @@
         }
       },
       "Lockers": {
-        "required": [
-          "name",
-          "lock",
-          "empty"
-        ],
         "type": "object",
         "properties": {
-          "name": {
+          "locker1": {
             "type": "string",
-            "example": "locker1"
-          },
-          "bitmask": {
-            "type": "number",
-            "example": "8",
-            "description": "Power of 2. For data masking"
-          },
-          "lock": {
-            "type": "boolean",
-            "example": "true"
-          },
-          "empty": {
-            "type": "boolean",
             "example": "false"
           },
-          "outlet": {
-            "$ref": "#/components/schemas/Outlet"
-          },
-          "create_date": {
+          "locker2": {
             "type": "string",
-            "format": "date-time",
-            "example": "2019-12-18T13:58:21.328Z"
+            "example": "true"
+          },
+          "locker3": {
+            "type": "string",
+            "example": "false"
           }
         },
         "xml": {
           "name": "Locker"
+        }
+      },
+      "LockersResponse": {
+        "type": "array",
+        "items" : {
+          "type": "object",
+          "properties": {
+            "name": {
+              "type": "string",
+              "example": "locker1"
+            },
+            "bitmask": {
+              "type": "number",
+              "example": 256
+            },
+            "lock": {
+              "type": "boolean",
+              "example": false
+            },
+            "empty": {
+              "type": "boolean",
+              "example": true
+            }
+          }
+        },
+        "xml": {
+          "name": "LockersResponse"
         }
       },
       "Outlet": {
