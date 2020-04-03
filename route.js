@@ -9,11 +9,11 @@ var scaleController = require('./ScaleController')
 var paymentController = require('./PaymentController')
 
 // Locker routes
-router.route('/lockers/:action_code/outlet/:outlet_id')
+router.route('/lockers/:action_code')
     .get(lockerController.index)
     .post(lockerController.command);
     
-router.route('/lockers/:lockers_id/outlet/:outlet_id')
+router.route('/locker/:lockers_name')
     .get(lockerController.view);
 
 // router.param('lockers_id', function(request, response, next, lockersId) {

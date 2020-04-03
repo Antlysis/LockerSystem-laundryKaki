@@ -4,10 +4,23 @@ const base64 =  require('base-64');
 //locker controller
 Locker = require('./LockerModel');
 Keys = require('./KeyModel');
+
+const EventEmitter = require('events');
+
+class OnDataEmitter extends EventEmitter { }
+const OnData = new OnDataEmitter();
+
+
+const asyncMiddleware = fn =>
+  (req, res, next) => {
+    Promise.resolve(fn(req, res, next))
+      .catch(next);
+  };
+
 // Handle index actions
-exports.index = function (req, res, next) {
+exports.index = asyncMiddleware(async (req, res, next) => {
     try{
-        authenticate(req, res, function(err, apiClient) {
+        authenticate(req, res, async function(err, apiClient) {
             if(err) {
                 return res.status(400).send(err)
             } else if(!err && apiClient) {
@@ -17,19 +30,29 @@ exports.index = function (req, res, next) {
                 console.log(ApiParameters);
                 if (ApiParameters.action_code == "GetAll"){
                     console.log("Initiate GetAll");
-                    Locker.get(function (err, locker) {
-                        if (err) {
-                            res.json({
-                                status: "error",
-                                message: err,
-                            });
-                        }
-                        res.json({
-                            status: "success",
-                            message: "Locker data retrieved successfully",
-                            data: locker
-                        });
-                    });
+                    // nodeClient = getConn('Node');
+                    // lock(STATUS,5);
+                    // nodeClient.write(hexVal);                                  
+                    // AllLocker = await getAllLocker();                     
+                    // return res.status(200).send(AllLocker);
+                    let status = false
+                    OnData.on('code', (data)=>{
+                        status = true
+                        res.status(200).send({data})
+                        OnData.removeAllListeners('code');
+                    })
+
+                    // set a timeout to remove listener and send timeout response if the TCP server fails to reply
+                    setTimeout(()=>{
+                        if(status) return true;
+                        // Clear the enevnt listener to void memory leaks
+                        OnData.removeAllListeners('code');
+                        res.status(502).send({error: 'timedout'})
+                    }, 2000)
+
+                    nodeClient = getConn('Node');
+                    lock(STATUS,1);                    
+                    nodeClient.write(hexVal); 
                 } else {
                     res.status(400).json({
                         status: "Fail to find correct code",
@@ -43,12 +66,30 @@ exports.index = function (req, res, next) {
     } catch(err){
         next(err);
     }    
+});
+
+let getAllLocker = async () =>{
+    try {
+        lockerData = await Locker.find(function (err, locker) {
+            if (err) {
+                console.log(err)
+            }
+            return locker;
+        })    
+        if(!lockerData){
+            throw new Error('No data')
+        }else {
+            return lockerData;
+        }
+    } catch (Error) {
+        console.log('Opps, an error occurred', Error);
+    }   
 };
 
-function authenticate(req, res, callback) {
+async function authenticate(req, res, callback) {
   var pat1 = /Basic ([0-9a-zA-Z]+)/g;
   var pat2 = /([0-9a-zA-Z]+):([0-9a-zA-Z]+)/g;
-  // console.log(req.headers.authorization)
+//   console.log(req.headers.authorization)
   var code = req.headers.authorization.replace(pat1, "$1");
   var data = base64.decode(code);
   var clientid = data.replace(pat2, "$1");
@@ -76,9 +117,9 @@ function authenticate(req, res, callback) {
  * curl -i -X POST -H 'Content-Type: application/json' -d '{"actioncode": "StaffOpen", "year": "2009"}' "http://localhost:3000/api/v1/lockers?command=water&amount=2&test=3"
  * req.body = { actioncode: 'StaffOpen', year: '2009' } req.query = { command: 'water', amount: '2', test: '3' }
  */
-exports.command = (req, res, next) => {
+exports.command = asyncMiddleware(async (req, res, next) =>  {
     try{
-        authenticate(req, res, function(err, apiClient) {
+        authenticate(req, res, async function(err, apiClient) {
             if(err) {
                 return res.status(400).send(err)
             } else if(!err && apiClient) {
@@ -86,36 +127,48 @@ exports.command = (req, res, next) => {
                     ApiBody = req.body,
                     ApiQuery = req.query;
                 console.log(ApiParameters);
-                if (ApiParameters.action_code == "UserOpen" && ApiParameters.outlet_id == Outlet.location){
-                    console.log("Initiate UserOpen ");
-                    lock(OPEN,ApiQuery.locker);
+                if (ApiParameters.action_code == "OpenOne"){
+                    console.log("Initiate OpenOne");
+
+                                      
+                    nodeClient = getConn('Node');                
+                    var UOLocker = lockerStatus.findIndex(status => {
+                        if (status.name == Object.keys(ApiBody) && status.lock == !(Object.values(ApiBody) == 'false')){
+                            return true;                            
+                        } else false;                    
+                    });
+                    console.log("Locker result: "+UOLocker);                    
+                    lock(OPEN, UOLocker);                    
                     nodeClient.write(hexVal); 
+
+                    // res.status(200).send('Receive action code');
+                } else if (ApiParameters.action_code == "OpenMultiple" ){
+                    console.log("Initiate OpenMultiple");
+
+                    nodeClient = getConn('Node'); 
+                    for (const property in ApiBody) {                
+                        var OMLocker = lockerStatus.findIndex(status => {
+                            if (status.name == `${property}` && status.lock == !(`${ApiBody[property]}`=== 'false')){
+                                return true;                            
+                            } else false;                    
+                        });
+                        console.log("Locker result: "+ OMLocker);                    
+                        lock(OPEN, OMLocker);                    
+                        nodeClient.write(hexVal); 
+                    }                    
 
                     res.status(200).send('Receive action code');
-                } else if (ApiParameters.action_code == "OpenAll" && ApiParameters.outlet_id == Outlet.location){
-                    console.log("Initiate OpenAll");
-                    lock(OPEN,ApiQuery.locker);
-                    nodeClient.write(hexVal); 
-
-                    res.status(200).send('Receive action code');
-                } else if (ApiParameters.action_code == "StaffOpen" && ApiParameters.outlet_id == Outlet.location){
-                    console.log("Initiate StaffOpen");
-                    lock(OPEN,ApiQuery.locker);
-                    nodeClient.write(hexVal); 
-
-                    res.status(200).send('Receive action code');            
-                } else if (ApiParameters.action_code == "RiderOpen" && ApiParameters.outlet_id == Outlet.location){
-                    console.log("RiderOpen");
-                    lock(OPEN,ApiQuery.locker);
-                    nodeClient.write(hexVal); 
-
-                    res.status(200).send('Receive action code');            
-                } else if (ApiParameters.action_code == "StaffDeposit" && ApiParameters.outlet_id == Outlet.location){
-                    console.log("Initiate StaffDeposit ");
-                    lock(OPEN,ApiQuery.locker);
-                    nodeClient.write(hexVal); 
-
-                    res.status(200).send('Receive action code');
+                } else if (ApiParameters.action_code == "NewOutlet" ){
+                    console.log("Initiate NewOutlet");
+                    var locker = new Locker();
+                    locker.outlet = ApiBody.outlet ;
+                    locker.brand = ApiBody.brand;
+                    locker.location = ApiBody.location;
+                    locker.locker = lockerStatus;
+                    // save the contact and check for errors
+                    locker.save(function (err) {
+                        res.status(200).send('Receive action code');
+                    });                                  
                 } else {
                     res.json({
                         status: "success",
@@ -129,10 +182,10 @@ exports.command = (req, res, next) => {
     } catch(err){
         next(err);
     }    
-};
+});
 
 // Handle view locker info
-exports.view = function (req, res, next) {
+exports.view = asyncMiddleware(async (req, res, next) =>  {
     // Locker.findById(req.params.lockers_id, function (err, locker) {
     //     if (err)
     //         res.send(err);
@@ -146,7 +199,11 @@ exports.view = function (req, res, next) {
             return res.status(400).send(err)
         } else if(!err && apiClient) {
             console.log(req.params);
-            Locker.findById(req.params.lockers_id).exec().then((data) =>{
+            var name = 'name';
+            var value = req.params.lockers_name;
+            var query = {};
+            query[locker] = value;
+            Locker.findOne(query).exec().then((data) =>{
                 res.json({
                     status:1,
                     message: 'Locker details loading..', 
@@ -156,7 +213,7 @@ exports.view = function (req, res, next) {
             .catch(next);
         }
     })
-};
+});
 
 /**
  * High 4 bit: Board(CU) No. Low 4 bit : No. of Box or Cell of Locker CU)
@@ -167,7 +224,7 @@ CMD: Classify Command language
 the RS485 bus (Notice: For this command, address of CU board is a fixed value as F)
 ADDR: High 4 bit: Board(CU) No. Low 4 bit : No. of Box or Cell of Locker CU)
 */
-const OPEN = 0x01
+const OPEN = 0x01, ALL = 0x02;
 const STATUS = 0x00;
 const PREFIX = 0x02; // JavaScript allows hex numbers.
 const SUFFIX = 0x03;
@@ -177,27 +234,23 @@ var SUM = 0x37;
 var bytesToSend = [PREFIX, ADDR, CMD, SUFFIX, SUM],
     hexVal = new Uint8Array(bytesToSend);
 var response = {address:0, command:0, lock:0, present:0};
-const Outlet = {
-    location: "TamanSungaiBesi",
-    brand: "WashStudio"
-}; //Hardcoded Location
 var lockerStatus = [
-    {name: 'locker1', bitmask: 0x0100, lock: false, empty: false, staffReady:false, riderReady:false},
-    {name: 'locker2', bitmask: 0x0200, lock: false, empty: false, staffReady:false, riderReady:false},
-    {name: 'locker3', bitmask: 0x0400, lock: false, empty: false, staffReady:false, riderReady:false},
-    {name: 'locker4', bitmask: 0x0800, lock: false, empty: false, staffReady:false, riderReady:false},
-    {name: 'locker5', bitmask: 0x1000, lock: false, empty: false, staffReady:false, riderReady:false},
-    {name: 'locker6', bitmask: 0x2000, lock: false, empty: false, staffReady:false, riderReady:false},
-    {name: 'locker7', bitmask: 0x4000, lock: false, empty: false, staffReady:false, riderReady:false},
-    {name: 'locker8', bitmask: 0x8000, lock: false, empty: false, staffReady:false, riderReady:false},
-    {name: 'locker9', bitmask: 0x0001, lock: false, empty: false, staffReady:false, riderReady:false},
-    {name: 'locker10', bitmask: 0x0002, lock: false, empty: false, staffReady:false, riderReady:false},
-    {name: 'locker11', bitmask: 0x0004, lock: false, empty: false, staffReady:false, riderReady:false},
-    {name: 'locker12', bitmask: 0x0008, lock: false, empty: false, staffReady:false, riderReady:false},
-    {name: 'locker13', bitmask: 0x0010, lock: false, empty: false, staffReady:false, riderReady:false},
-    {name: 'locker14', bitmask: 0x0020, lock: false, empty: false, staffReady:false, riderReady:false},
-    {name: 'locker15', bitmask: 0x0040, lock: false, empty: false, staffReady:false, riderReady:false},
-    {name: 'locker16', bitmask: 0x0080, lock: false, empty: false, staffReady:false, riderReady:false}
+    {name: 'locker1', bitmask: 0x0100, lock: false, empty: false},
+    {name: 'locker2', bitmask: 0x0200, lock: false, empty: false},
+    {name: 'locker3', bitmask: 0x0400, lock: false, empty: false},
+    {name: 'locker4', bitmask: 0x0800, lock: false, empty: false},
+    {name: 'locker5', bitmask: 0x1000, lock: false, empty: false},
+    {name: 'locker6', bitmask: 0x2000, lock: false, empty: false},
+    {name: 'locker7', bitmask: 0x4000, lock: false, empty: false},
+    {name: 'locker8', bitmask: 0x8000, lock: false, empty: false},
+    {name: 'locker9', bitmask: 0x0001, lock: false, empty: false},
+    {name: 'locker10', bitmask: 0x0002, lock: false, empty: false},
+    {name: 'locker11', bitmask: 0x0004, lock: false, empty: false},
+    {name: 'locker12', bitmask: 0x0008, lock: false, empty: false},
+    {name: 'locker13', bitmask: 0x0010, lock: false, empty: false},
+    {name: 'locker14', bitmask: 0x0020, lock: false, empty: false},
+    {name: 'locker15', bitmask: 0x0040, lock: false, empty: false},
+    {name: 'locker16', bitmask: 0x0080, lock: false, empty: false}
 ];
 
 // This function create and return a net.Socket object to represent TCP client.
@@ -209,7 +262,7 @@ function getConn(connName){
     }
 
     // Create TCP client.
-        var client = net.createConnection(option, function () {
+    var client = net.createConnection(option, function () {
         console.log('Connection name : ' + connName);
         console.log('Connection local address : ' + client.localAddress + ":" + client.localPort);
         console.log('Connection remote address : ' + client.remoteAddress + ":" + client.remotePort);
@@ -219,10 +272,19 @@ function getConn(connName){
     client.setEncoding('hex');
 
     // When receive server send back data.
-    client.on('data', function (data) {
+    client.on('data', async (data) => {
         console.log('Server return data : ' + data);
         lockerStatus = maskingCompare(data);
-        // console.log(lockerStatus);        
+        // console.log(lockerStatus);
+        // Locker.findOneAndUpdate({ outlet: 'outlet1'}, {locker: lockerStatus}, {useFindAndModify: false ,upsert: true}, (err) => {
+        //     if(err) {
+        //         console.log(err)
+        //     } else {
+        //         console.log("updated the locker sets database")
+        //     }
+        // })
+        OnData.emit('code', lockerStatus);
+        newLockerData = await saveLocker();    
     });
 
     // When connection disconnected.
@@ -241,6 +303,25 @@ function getConn(connName){
     return client;
 }
 
+let saveLocker = async () =>{
+    try {
+        lockerData = await Locker.findOneAndUpdate({ outlet: 'outlet1'}, {locker: lockerStatus}, {useFindAndModify: false ,upsert: true, new: true}, (err) => {
+            if(err) {
+                console.log(err)
+            } else {
+                console.log("updated the locker sets database")
+            }
+        })
+        if(!lockerData){
+            throw new Error('No data')
+        }else {
+            return lockerData;
+        }
+    } catch (Error) {
+        console.log('Opps, an error occurred', Error);
+    }   
+};
+
 var maskingCompare = function(data){
     var pattern1 = /^02([a-f0-9]{2})+([a-f0-9]{2})+([a-f0-9]{4})+([a-f0-9]{4})03[a-f0-9]{2}/g
     response.address = data.replace(pattern1, "$1");
@@ -253,7 +334,7 @@ var maskingCompare = function(data){
         const objReceive = parseInt(response.present,16);
         return Object.assign({}, status, {
             lock: (lockReceive & status.bitmask) != 0,
-            empty: (objReceive & status.bitmask) != 0
+            empty: (objReceive & status.bitmask) == 0
         })        
     })
     // console.log(result);
@@ -266,28 +347,14 @@ var maskingCompare = function(data){
 var lock = function(command, numbersLock){
     if(command == OPEN){
         CMD = 0x31;
-        ADDR = (numbersLock-1) & 0x0F;        
+        ADDR = (numbersLock) & 0x0F;        
         SUM = PREFIX + SUFFIX + CMD + ADDR;
         bytesToSend = [PREFIX, ADDR, CMD, SUFFIX, SUM];
         hexVal = new Uint8Array(bytesToSend);
    
     } else if (command == STATUS){
         CMD = 0x30;
-        ADDR = (numbersLock-1) & 0x0F;
-        SUM = PREFIX + SUFFIX + CMD + ADDR;
-        bytesToSend = [PREFIX, ADDR, CMD, SUFFIX, SUM];
-        hexVal = new Uint8Array(bytesToSend);
-        
-    } else if (command == SREADY){ //Staff Ready
-        CMD = 0x30;
-        ADDR = (numbersLock-1) & 0x0F;
-        SUM = PREFIX + SUFFIX + CMD + ADDR;
-        bytesToSend = [PREFIX, ADDR, CMD, SUFFIX, SUM];
-        hexVal = new Uint8Array(bytesToSend);
-        
-    } else if (command == RREADY){ //Rider Ready
-        CMD = 0x30;
-        ADDR = (numbersLock-1) & 0x0F;
+        ADDR = (numbersLock) & 0x0F;
         SUM = PREFIX + SUFFIX + CMD + ADDR;
         bytesToSend = [PREFIX, ADDR, CMD, SUFFIX, SUM];
         hexVal = new Uint8Array(bytesToSend);
@@ -298,10 +365,18 @@ var lock = function(command, numbersLock){
 
 // // Create node client socket.
 var nodeClient = getConn('Node');
-test = lock(STATUS,5);
+test = lock(STATUS,1);
 // maskingCompare('02003522810040037c');
 
 // console.log(hexVal);
 // lock(STATUS,2);
 nodeClient.write(hexVal); 
 
+function checkAvailability(arr, val) 
+{
+  return arr.some(
+           function(arrVal) 
+           {
+             return val === arrVal;
+           } );
+}

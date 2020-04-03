@@ -3,24 +3,20 @@ const mongoose = require('mongoose');
 
 // Setup schema
 var lockerSchema = mongoose.Schema({
-  name: {
+  outlet: {
       type: String,
       required: true
   },
-  bitmask: {
-      type: Number
-  },
-  lock: {
-      type: Boolean,
-      required: true
-  },
-  empty: {
-    type: Boolean,
+  location: {
+    type: String,
     required: true
   },
-  outlet: {
-    type: Object,
+  brand: {
+    type: String,
     required: true
+  },
+  locker: {
+      type: Object
   },
   create_date: {
       type: Date,
