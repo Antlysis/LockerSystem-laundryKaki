@@ -38,8 +38,10 @@ router.route('/payment/:action_code')
 router.route('/payment/:action_code')
     .get(paymentController.view);
 
-
-router.use("/docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+var options = {
+    // customCss: '.swagger-ui .topbar { display: none }'
+};
+router.use("/docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument,options));
   
 // Error Handler
 // centralized error handler - note how it has four parameters

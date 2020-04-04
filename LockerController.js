@@ -10,6 +10,7 @@ const EventEmitter = require('events');
 class OnDataEmitter extends EventEmitter { }
 const OnData = new OnDataEmitter();
 
+var TCPConnectionFlag = false;
 
 const asyncMiddleware = fn =>
   (req, res, next) => {
@@ -35,18 +36,30 @@ exports.index = asyncMiddleware(async (req, res, next) => {
                     // nodeClient.write(hexVal);                                  
                     // AllLocker = await getAllLocker();                     
                     // return res.status(200).send(AllLocker);
-                    let status = false
-                    OnData.on('code', (data)=>{
-                        status = true
-                        res.status(200).send(data)
+                    let status = false;
+                    OnData.once('code', (data)=>{
+                        status = true;
                         OnData.removeAllListeners('code');
+                        OnData.removeAllListeners('errorS');
+                        res.status(200).send(data)  
+                        console.log("code")                      
+                    });
+                    
+                    OnData.once('errorS', (data)=>{
+                        status = true;
+                        OnData.removeAllListeners('errorS');
+                        OnData.removeAllListeners('code');
+                        res.status(501).send({error: 'timedout', message: data})
+                        console.log("error")                                  
                     })
+
 
                     // set a timeout to remove listener and send timeout response if the TCP server fails to reply
                     setTimeout(()=>{
                         if(status) return true;
                         // Clear the enevnt listener to void memory leaks
                         OnData.removeAllListeners('code');
+                        OnData.removeAllListeners('errorS');
                         res.status(502).send({error: 'timedout'})
                     }, 2000)
 
@@ -127,6 +140,7 @@ exports.command = asyncMiddleware(async (req, res, next) =>  {
                     ApiBody = req.body,
                     ApiQuery = req.query;
                 console.log(ApiParameters);
+                
                 if (ApiParameters.action_code == "Open" ){
                     console.log("Initiate OpenMultiple");
 
@@ -140,9 +154,30 @@ exports.command = asyncMiddleware(async (req, res, next) =>  {
                         console.log("Locker result: "+ OMLocker);                    
                         lock(OPEN, OMLocker);                    
                         nodeClient.write(hexVal); 
-                    }                    
+                    }
+                    
+                    let status = false;
+                    OnData.on('errorS', (data)=>{
+                        status = true;
+                        res.status(502).send({error: 'timedout', message: data})
+                        OnData.removeAllListeners('errorS');
+                        console.log("error post")
+                    });
+                    var count = 0, countCheck = 0;
 
-                    res.status(200).send('Receive action code');
+                    setTimeout(()=>{
+                        if(status) return true;
+                        // Clear the enevnt listener to void memory leaks
+                        OnData.removeAllListeners('errorS'); 
+                        if (TCPConnectionFlag)                       
+                            res.status(200).send('Receive action code');
+                        else 
+                            res.status(502).send({error: 'timedout'});
+
+                    }, 1500);
+
+
+                    // res.status(200).send('Receive action code');
                 } else if (ApiParameters.action_code == "NewOutlet" ){
                     console.log("Initiate NewOutlet");
                     var locker = new Locker();
@@ -155,7 +190,7 @@ exports.command = asyncMiddleware(async (req, res, next) =>  {
                         res.status(200).send('Receive action code');
                     });                                  
                 } else {
-                    res.json({
+                    res.status(404).json({
                         status: "success",
                         message: "Incorrect action code"
                     });
@@ -251,9 +286,10 @@ function getConn(connName){
         console.log('Connection name : ' + connName);
         console.log('Connection local address : ' + client.localAddress + ":" + client.localPort);
         console.log('Connection remote address : ' + client.remoteAddress + ":" + client.remotePort);
+        TCPConnectionFlag = true;
     });
 
-    client.setTimeout(20000);
+    client.setTimeout(10000);
     client.setEncoding('hex');
 
     // When receive server send back data.
@@ -269,7 +305,7 @@ function getConn(connName){
         //     }
         // })
         OnData.emit('code', lockerStatus);
-        newLockerData = await saveLocker();    
+        // newLockerData = await saveLocker();    
     });
 
     // When connection disconnected.
@@ -278,10 +314,14 @@ function getConn(connName){
     });
 
     client.on('timeout', function () {
-        console.log('Client connection timeout. ');
+        msg = 'Client connection timeout. ';
+        // OnData.emit('errorS', msg);
+        TCPConnectionFlag = false;
+        console.log(msg);
     });
 
     client.on('error', function (err) {
+        OnData.emit('errorS', JSON.stringify(err));
         console.error(JSON.stringify(err));
     });
 
