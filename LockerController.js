@@ -42,7 +42,7 @@ exports.index = asyncMiddleware(async (req, res, next) => {
                         OnData.removeAllListeners('code');
                         OnData.removeAllListeners('errorS');
                         res.status(200).send(data)  
-                        console.log("code")                      
+                        // console.log("code")                      
                     });
                     
                     OnData.once('errorS', (data)=>{
@@ -50,7 +50,7 @@ exports.index = asyncMiddleware(async (req, res, next) => {
                         OnData.removeAllListeners('errorS');
                         OnData.removeAllListeners('code');
                         res.status(501).send({error: 'timedout', message: data})
-                        console.log("error")                                  
+                        // console.log("error")                                  
                     })
 
 
@@ -124,6 +124,11 @@ async function authenticate(req, res, callback) {
   })
 }
 
+function sleep(ms) {
+    return new Promise((resolve) => {
+      setTimeout(resolve, ms);
+    });
+  }   
 /**
  * curl -i -X POST -H 'Content-Type: application/x-www-form-urlencoded' -d 'actioncode=StaffOpen&year=2009' "http://localhost:3000/api/v1/lockers?command=water&amount=2&test=3"
  * req.body = { actioncode: 'StaffOpen', year: '2009' } req.query = { command: 'water', amount: '2', test: '3' }
@@ -144,18 +149,10 @@ exports.command = asyncMiddleware(async (req, res, next) =>  {
                 if (ApiParameters.action_code == "Open" ){
                     console.log("Initiate OpenMultiple");
 
-                    nodeClient = getConn('Node'); 
-                    for (const property in ApiBody) {                
-                        var OMLocker = lockerStatus.findIndex(status => {
-                            if (status.name == `${property}` && status.lock == !(`${ApiBody[property]}`=== 'false')){
-                                return true;                            
-                            } else false;                    
-                        });
-                        console.log("Locker result: "+ OMLocker);                    
-                        lock(OPEN, OMLocker);                    
-                        nodeClient.write(hexVal); 
-                    }
-                    
+                    nodeClient = getConn('Node');
+                    lock(STATUS,0);                    
+                    nodeClient.write(hexVal);  
+
                     let status = false;
                     OnData.on('errorS', (data)=>{
                         status = true;
@@ -163,20 +160,36 @@ exports.command = asyncMiddleware(async (req, res, next) =>  {
                         OnData.removeAllListeners('errorS');
                         console.log("error post")
                     });
-                    var count = 0, countCheck = 0;
 
                     setTimeout(()=>{
                         if(status) return true;
                         // Clear the enevnt listener to void memory leaks
                         OnData.removeAllListeners('errorS'); 
-                        if (TCPConnectionFlag)                       
+                        if (TCPConnectionFlag) {
+                            lock(STATUS,1);                    
+                            nodeClient.write(hexVal);                       
                             res.status(200).send('Receive action code');
-                        else 
+                            TCPConnectionFlag = false;
+                        }else{ 
                             res.status(502).send({error: 'timedout'});
+                            TCPConnectionFlag = false;
+                        }
 
-                    }, 1500);
-
-
+                    }, 2000);
+  
+                    for (const property in ApiBody) {               
+                        var OMLocker = lockerStatus.findIndex(status => {
+                            // if (status.name == `${property}` && status.lock == !(`${ApiBody[property]}`)){
+                            if (status.name == `${property}` & (status.empty)){
+                                return true;                            
+                            } else false;                    
+                        });
+                        console.log("Locker result: "+ OMLocker);                    
+                        lock(OPEN, OMLocker);                    
+                        nodeClient.write(hexVal); 
+                        await sleep(150);
+                    }         
+                    
                     // res.status(200).send('Receive action code');
                 } else if (ApiParameters.action_code == "NewOutlet" ){
                     console.log("Initiate NewOutlet");
@@ -323,6 +336,7 @@ function getConn(connName){
     client.on('error', function (err) {
         OnData.emit('errorS', JSON.stringify(err));
         console.error(JSON.stringify(err));
+        TCPConnectionFlag = false;
     });
 
     return client;
