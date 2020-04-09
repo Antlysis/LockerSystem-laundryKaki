@@ -24,7 +24,7 @@
       "url": "http://localhost:3000/api/v1"
     },
     {
-    "url": "https://laundro-tsb.localtunnel.thelaundro.com/api/v1"
+    "url": "http://giant-sheep-67.localtunnel.thelaundro.com/api/v1"
     }
   ],
   "tags": [

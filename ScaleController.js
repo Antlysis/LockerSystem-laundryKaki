@@ -132,7 +132,11 @@ function authenticate(req, res, callback) {
   var pat1 = /Basic ([0-9a-zA-Z]+)/g;
   var pat2 = /([0-9a-zA-Z]+):([0-9a-zA-Z]+)/g;
   // console.log(req.headers.authorization)
-  var code = req.headers.authorization.replace(pat1, "$1");
+    if (req.headers.authorization == null){
+        console.log('nothing')
+        var code = null;
+    } else 
+        var code = req.headers.authorization.replace(pat1, "$1");
   var data = base64.decode(code);
   var clientid = data.replace(pat2, "$1");
   var clientSecret = data.replace(pat2, "$2");

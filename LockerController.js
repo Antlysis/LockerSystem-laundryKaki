@@ -102,28 +102,31 @@ let getAllLocker = async () =>{
 };
 
 async function authenticate(req, res, callback) {
-  var pat1 = /Basic ([0-9a-zA-Z]+)/g;
-  var pat2 = /([0-9a-zA-Z]+):([0-9a-zA-Z]+)/g;
-//   console.log(req.headers.authorization)
-  var code = req.headers.authorization.replace(pat1, "$1");
-  var data = base64.decode(code);
-  var clientid = data.replace(pat2, "$1");
-  var clientSecret = data.replace(pat2, "$2");
-  if(!clientid) {
-    msg.status = "Missing Client ID";
-    return res.status(400).send(msg)
-  } else if (!clientSecret) {
-    msg.status = "Missing Client Secret";
-    return res.status(400).send(msg)
-  }
-  Keys.authenticate(clientid, clientSecret, function(error, apiClient) {
-    if(apiClient) {
-        callback(null, apiClient);
-    } else {
-        console.log(error);
-        callback(error)
+    var pat1 = /Basic ([0-9a-zA-Z]+)/g;
+    var pat2 = /([0-9a-zA-Z]+):([0-9a-zA-Z]+)/g;
+    if (req.headers.authorization == null){
+        console.log('nothing')
+        var code = null;
+    } else 
+        var code = req.headers.authorization.replace(pat1, "$1");
+    var data = base64.decode(code);
+    var clientid = data.replace(pat2, "$1");
+    var clientSecret = data.replace(pat2, "$2");
+    if(!clientid) {
+        msg.status = "Missing Client ID";
+        return res.status(400).send(msg)
+    } else if (!clientSecret) {
+        msg.status = "Missing Client Secret";
+        return res.status(400).send(msg)
     }
-  })
+    Keys.authenticate(clientid, clientSecret, function(error, apiClient) {
+        if(apiClient) {
+            callback(null, apiClient);
+        } else {
+            console.log(error);
+            callback(error)
+        }
+    })
 }
 
 function sleep(ms) {
