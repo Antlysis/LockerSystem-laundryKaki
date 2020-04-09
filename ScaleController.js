@@ -5,7 +5,7 @@ const base64 =  require('base-64');
 Scale = require('./ScaleModel');
 Keys = require('./KeyModel');
 // Handle index actions
-exports.index = function (req, res) {
+exports.index = function (req, res, next) {
     try{
         authenticate(req, res, function(err, apiClient) {
             if(err) {
@@ -33,7 +33,7 @@ exports.index = function (req, res) {
                     res.json({
                         status: "success",
                         message: "Scale data retrieved successfully",
-                        data: scaleStatus
+                        data: scaleStatus_Test
                     });
                 } else {
                     res.status(400).json({
@@ -77,6 +77,17 @@ var scaleStatus = {
          weighting: false
      }
  }
+
+
+ var scaleStatus_Test = {
+    weight: 5.001,
+    statusReturn: "B",
+    status: {
+        zero: false,
+        stable: true,
+        weighting: false
+    }
+}
 
 /**
  * Serial Port Function

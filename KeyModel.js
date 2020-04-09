@@ -8,9 +8,15 @@ var KeysSchema = new mongoose.Schema({
   }
 });
 
+var key = {
+  clientid: "5e1fe08f65e74b175a106180",
+  clientSecret : "123asdqwe"
+}
+
 KeysSchema.statics.authenticate = function (clientid, cSecret, callback) {
-  Keys.findOne({ _id: clientid })
-    .exec(function (err, key) {
+  // Keys.findOne({ _id: clientid })
+  //   .exec(function (err, key) {
+
       if (err) {
         return callback(err)
       } else if (!key) {
@@ -26,7 +32,7 @@ KeysSchema.statics.authenticate = function (clientid, cSecret, callback) {
         //console.log("failed")
         return callback("Invalid Client Secret", null );
       }
-    });
+    // });
 }
 
 //TokenSchema.index({ createAt: 1 }, { expireAfterSeconds: 300 });

@@ -27,7 +27,7 @@ router.route('/locker/:lockers_name')
 router.route('/scale/:action_code')
     .get(scaleController.index);
     
-router.route('/scale/:action_code')
+router.route('/scales/:action_code')
     .get(scaleController.view);
 
 // Payment routes
@@ -46,7 +46,7 @@ router.use("/docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument,options));
 // Error Handler
 // centralized error handler - note how it has four parameters
 router.use(function(err, req, res, next) {
-    var someErrorMessage = "Testing 12344 error here"
+    var someErrorMessage = "Internal error here"
     // formulate an error response here
     console.log(err);
     res.status(500).send(someErrorMessage)
