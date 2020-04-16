@@ -329,23 +329,33 @@
             "format": "double",
             "example": "0.01"
           },
-          "outlet": {
-            "$ref": "#/components/schemas/Outlet"
-          },
-          "status": {
+          "statusReturn": {
             "type": "string",
             "description": "Scale Status",
             "enum": [
-              "zero",
-              "weighting",
-              "stable"
+              "A",
+              "B",
+              "C",
+              ""
             ],
-            "example": "zero"
+            "example": "B"
           },
-          "stable": {
-            "type": "boolean",
-            "default": false,
-            "example": "false"
+          "status": {
+            "type": "object",
+            "properties": {
+              "zero": {
+                "type": "boolean",
+                "example": false
+              },
+              "stable": {
+                "type": "boolean",
+                "example": false
+              },
+              "weighting": {
+                "type": "boolean",
+                "example": false
+              }
+            }
           }
         },
         "xml": {
