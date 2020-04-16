@@ -33,7 +33,7 @@ exports.index = function (req, res, next) {
                     res.json({
                         status: "success",
                         message: "Scale data retrieved successfully",
-                        data: scaleStatus_Test
+                        data: scaleStatus
                     });
                 } else {
                     res.status(400).json({

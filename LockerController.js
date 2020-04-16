@@ -31,43 +31,43 @@ exports.index = asyncMiddleware(async (req, res, next) => {
                 console.log(ApiParameters);
                 if (ApiParameters.action_code == "GetAll"){
                     console.log("Initiate GetAll");
-                    // // nodeClient = getConn('Node');
-                    // // lock(STATUS,5);
-                    // // nodeClient.write(hexVal);                                  
-                    // // AllLocker = await getAllLocker();                     
-                    // // return res.status(200).send(AllLocker);
-                    // let status = false;
-                    // OnData.once('code', (data)=>{
-                    //     status = true;
-                    //     OnData.removeAllListeners('code');
-                    //     OnData.removeAllListeners('errorS');
-                    //     res.status(200).send(data)  
-                    //     // console.log("code")                      
-                    // });
-                    
-                    // OnData.once('errorS', (data)=>{
-                    //     status = true;
-                    //     OnData.removeAllListeners('errorS');
-                    //     OnData.removeAllListeners('code');
-                    //     res.status(501).send({error: 'timedout', message: data})
-                    //     // console.log("error")                                  
-                    // })
-
-
-                    // // set a timeout to remove listener and send timeout response if the TCP server fails to reply
-                    // setTimeout(()=>{
-                    //     if(status) return true;
-                    //     // Clear the enevnt listener to void memory leaks
-                    //     OnData.removeAllListeners('code');
-                    //     OnData.removeAllListeners('errorS');
-                    //     res.status(502).send({error: 'timedout'})
-                    // }, 2000)
-
                     // nodeClient = getConn('Node');
-                    // lock(STATUS,1);                    
-                    // nodeClient.write(hexVal); 
+                    // lock(STATUS,5);
+                    // nodeClient.write(hexVal);                                  
+                    // AllLocker = await getAllLocker();                     
+                    // return res.status(200).send(AllLocker);
+                    let status = false;
+                    OnData.once('code', (data)=>{
+                        status = true;
+                        OnData.removeAllListeners('code');
+                        OnData.removeAllListeners('errorS');
+                        res.status(200).send(data)  
+                        // console.log("code")                      
+                    });
+                    
+                    OnData.once('errorS', (data)=>{
+                        status = true;
+                        OnData.removeAllListeners('errorS');
+                        OnData.removeAllListeners('code');
+                        res.status(501).send({error: 'timedout', message: data})
+                        // console.log("error")                                  
+                    })
 
-                    res.status(200).send(lockerStatus);
+
+                    // set a timeout to remove listener and send timeout response if the TCP server fails to reply
+                    setTimeout(()=>{
+                        if(status) return true;
+                        // Clear the enevnt listener to void memory leaks
+                        OnData.removeAllListeners('code');
+                        OnData.removeAllListeners('errorS');
+                        res.status(502).send({error: 'timedout'})
+                    }, 2000)
+
+                    nodeClient = getConn('Node');
+                    lock(STATUS,1);                    
+                    nodeClient.write(hexVal); 
+
+                    // res.status(200).send(lockerStatus);
                 } else {
                     res.status(400).json({
                         status: "Fail to find correct code",
@@ -154,54 +154,54 @@ exports.command = asyncMiddleware(async (req, res, next) =>  {
                 if (ApiParameters.action_code == "Open" ){
                     console.log("Initiate OpenMultiple");
 
-                    // nodeClient = getConn('Node');
-                    // lock(STATUS,0);                    
-                    // nodeClient.write(hexVal);  
+                    nodeClient = getConn('Node');
+                    lock(STATUS,0);                    
+                    nodeClient.write(hexVal);  
 
-                    // let status = false;
-                    // OnData.on('errorS', (data)=>{
-                    //     status = true;
-                    //     res.status(502).send({error: 'timedout', message: data})
-                    //     OnData.removeAllListeners('errorS');
-                    //     console.log("error post")
-                    // });
+                    let status = false;
+                    OnData.on('errorS', (data)=>{
+                        status = true;
+                        res.status(502).send({error: 'timedout', message: data})
+                        OnData.removeAllListeners('errorS');
+                        console.log("error post")
+                    });
 
-                    // setTimeout(()=>{
-                    //     if(status) return true;
-                    //     // Clear the enevnt listener to void memory leaks
-                    //     OnData.removeAllListeners('errorS'); 
-                    //     if (TCPConnectionFlag) {
-                    //         lock(STATUS,1);                    
-                    //         nodeClient.write(hexVal);                       
-                    //         res.status(200).send('Receive action code');
-                    //         TCPConnectionFlag = false;
-                    //     }else{ 
-                    //         res.status(502).send({error: 'timedout'});
-                    //         TCPConnectionFlag = false;
-                    //     }
-                    // }, 2000);
+                    setTimeout(()=>{
+                        if(status) return true;
+                        // Clear the enevnt listener to void memory leaks
+                        OnData.removeAllListeners('errorS'); 
+                        if (TCPConnectionFlag) {
+                            lock(STATUS,1);                    
+                            nodeClient.write(hexVal);                       
+                            res.status(200).send('Receive action code');
+                            TCPConnectionFlag = false;
+                        }else{ 
+                            res.status(502).send({error: 'timedout'});
+                            TCPConnectionFlag = false;
+                        }
+                    }, 2000);
   
-                    // for (const property in ApiBody) {               
-                    //     var OMLocker = lockerStatus.findIndex(status => {
-                    //         // if (status.name == `${property}` && status.lock == !(`${ApiBody[property]}`)){
-                    //         if (status.name == `${property}` & (status.empty)){
-                    //             return true;                            
-                    //         } else false;                    
-                    //     });
-                    //     console.log("Locker result: "+ OMLocker);                    
-                    //     lock(OPEN, OMLocker);                    
-                    //     nodeClient.write(hexVal); 
-                    //     await sleep(150);
-                    // }         
+                    for (const property in ApiBody) {               
+                        var OMLocker = lockerStatus.findIndex(status => {
+                            // if (status.name == `${property}` && status.lock == !(`${ApiBody[property]}`)){
+                            if (status.name == `${property}` & (status.empty)){
+                                return true;                            
+                            } else false;                    
+                        });
+                        console.log("Locker result: "+ OMLocker);                    
+                        lock(OPEN, OMLocker);                    
+                        nodeClient.write(hexVal); 
+                        await sleep(150);
+                    }         
                     
-                    res.status(200).send('Receive action code');
+                    // res.status(200).send('Receive action code');
                 } else if (ApiParameters.action_code == "NewOutlet" ){
                     console.log("Initiate NewOutlet");
-                    // var locker = new Locker();
-                    // locker.outlet = ApiBody.outlet ;
-                    // locker.brand = ApiBody.brand;
-                    // locker.location = ApiBody.location;
-                    // locker.locker = lockerStatus;
+                    var locker = new Locker();
+                    locker.outlet = ApiBody.outlet ;
+                    locker.brand = ApiBody.brand;
+                    locker.location = ApiBody.location;
+                    locker.locker = lockerStatus;
                     // // save the contact and check for errors
                     // locker.save(function (err) {
                     //     res.status(200).send('Receive action code');
