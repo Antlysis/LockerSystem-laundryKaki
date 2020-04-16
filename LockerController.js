@@ -407,14 +407,14 @@ var lock = function(command, numbersLock){
 }
 
 
-// // Create node client socket.
-// var nodeClient = getConn('Node');
-// test = lock(STATUS,1);
-// // maskingCompare('02003522810040037c');
+// Create node client socket.
+var nodeClient = getConn('Node');
+test = lock(STATUS,1);
+// maskingCompare('02003522810040037c');
 
-// // console.log(hexVal);
-// // lock(STATUS,2);
-// nodeClient.write(hexVal); 
+// console.log(hexVal);
+// lock(STATUS,2);
+nodeClient.write(hexVal); 
 
 function checkAvailability(arr, val) 
 {
