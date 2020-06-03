@@ -4,6 +4,9 @@ const base64 =  require('base-64');
 //locker controller
 Locker = require('./LockerModel');
 Keys = require('./KeyModel');
+const logger = require('./config/winston')
+
+
 
 const EventEmitter = require('events');
 
@@ -28,6 +31,11 @@ exports.index = asyncMiddleware(async (req, res, next) => {
                 var ApiParameters = req.params,
                     ApiBody = req.body,
                     ApiQuery = req.query;
+                    // set locals, only providing error in development
+                    // res.locals.message = err.message
+                    // logger.setLogData(ApiBody);  
+                    logger.info(`${req.originalUrl} - ${req.method} - ${req.ip}`);
+
                 console.log(ApiParameters);
                 if (ApiParameters.action_code == "GetAll"){
                     console.log("Initiate GetAll");
@@ -41,14 +49,19 @@ exports.index = asyncMiddleware(async (req, res, next) => {
                         status = true;
                         OnData.removeAllListeners('code');
                         OnData.removeAllListeners('errorS');
-                        res.status(200).send(data)  
+                        logger.info("Retun sucess response", { 
+                            "sucess": true
+                        });
+                        res.status(200).send(data);
                         // console.log("code")                      
                     });
-                    
                     OnData.once('errorS', (data)=>{
                         status = true;
                         OnData.removeAllListeners('errorS');
                         OnData.removeAllListeners('code');
+                        logger.error("Retun error response", {
+                            "sucess":false
+                        })
                         res.status(501).send({error: 'timedout', message: data})
                         // console.log("error")                                  
                     })
@@ -60,6 +73,10 @@ exports.index = asyncMiddleware(async (req, res, next) => {
                         // Clear the enevnt listener to void memory leaks
                         OnData.removeAllListeners('code');
                         OnData.removeAllListeners('errorS');
+                        logger.error("Retun error response", {
+                            "sucess":false,
+                            "message": " timeout in two seconds"
+                        })
                         res.status(502).send({error: 'timedout'})
                     }, 2000)
 
@@ -174,17 +191,24 @@ exports.command = asyncMiddleware(async (req, res, next) =>  {
                             lock(STATUS,1);                    
                             nodeClient.write(hexVal);                       
                             res.status(200).send('Receive action code');
+                            logger.info("Retun success response", {
+                                "sucess":true
+                            })
                             TCPConnectionFlag = false;
                         }else{ 
                             res.status(502).send({error: 'timedout'});
                             TCPConnectionFlag = false;
+                            logger.error("Retun error response", {
+                                "sucess":false,
+                                "message": " timeout in two seconds"
+                            })
                         }
                     }, 2000);
   
                     for (const property in ApiBody) {               
                         var OMLocker = lockerStatus.findIndex(status => {
                             // if (status.name == `${property}` && status.lock == !(`${ApiBody[property]}`)){
-                            if (status.name == `${property}` & (status.empty)){
+                            if (status.name == `${property}` /*& (status.empty)*/){
                                 return true;                            
                             } else false;                    
                         });
@@ -332,15 +356,23 @@ function getConn(connName){
     });
 
     client.on('timeout', function () {
-        msg = 'Client connection timeout. ';
+        msg = ' Client connection timeout. ';
         // OnData.emit('errorS', msg);
         TCPConnectionFlag = false;
+        logger.error("Retun error response", {
+            "sucess":false,
+            "message": msg
+        })
         console.log(msg);
     });
 
     client.on('error', function (err) {
         OnData.emit('errorS', JSON.stringify(err));
         console.error(JSON.stringify(err));
+        logger.error("Retun error response", {
+            "sucess":false,
+            "message": JSON.stringify(err)
+        })
         TCPConnectionFlag = false;
     });
 

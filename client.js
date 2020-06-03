@@ -3,10 +3,15 @@ var express = require('express')
 var app = express();
 var routes = require('./route');
 var bodyParser = require('body-parser');
-
+const logger = require('./config/winston')
+const morgan = require('morgan');
 // Configure bodyparser to handle post requests
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
+
+
+var cors = require('cors')
+app.use(cors())
 
 // // Import Mongoose
 // let mongoose = require('mongoose');
@@ -24,6 +29,24 @@ app.use(bodyParser.json());
 // Send message for default URL
 app.get('/', (req, res) => res.send('Hello World with Express'));
 app.use('/api/v1', routes);
+
+// error handler
+app.use(function(err, req, res, next) {
+  // set locals, only providing error in development
+  res.locals.message = err.message;
+  res.locals.error = req.app.get('env') === 'development' ? err : {};
+
+  // add this line to include winston logging
+  logger.error(`${err.status} - ${err.message} - ${req.originalUrl} - ${req.method} - ${req.ip}`);
+
+  // render the error page
+  res.status(err.status);
+  res.render('error');
+});
+app.use(morgan('combined', { 
+  stream: logger.stream 
+  }
+));
 
 const server = app.listen(3000, () => {
     console.log(`Express is running on port ${server.address().port}`);

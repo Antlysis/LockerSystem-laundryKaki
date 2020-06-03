@@ -1,8 +1,9 @@
 const express = require('express');
 const router = express.Router();
-
+const morgan = require('morgan');
 const swaggerUi = require('swagger-ui-express');
 const swaggerDocument = require('./swagger.json');
+const logger = require('./config/winston');
 
 var lockerController = require('./LockerController');
 var scaleController = require('./ScaleController')
@@ -43,6 +44,11 @@ var options = {
 };
 router.use("/docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument,options));
   
+router.use(morgan('combined', { 
+    stream: logger.stream 
+    }
+));
+
 // Error Handler
 // centralized error handler - note how it has four parameters
 router.use(function(err, req, res, next) {

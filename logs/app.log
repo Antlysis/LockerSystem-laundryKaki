@@ -1,0 +1,174 @@
+{"error":{},"level":"error","message":"uncaughtException: S is not defined\nReferenceError: S is not defined\n    at Object.<anonymous> (/home/hz/Project/Locker2/LockerSystem-laundryKaki/config/winston.js:29:1)\n    at Module._compile (internal/modules/cjs/loader.js:816:30)\n    at Object.Module._extensions..js (internal/modules/cjs/loader.js:827:10)\n    at Module.load (internal/modules/cjs/loader.js:685:32)\n    at Function.Module._load (internal/modules/cjs/loader.js:620:12)\n    at Module.require (internal/modules/cjs/loader.js:723:19)\n    at require (internal/modules/cjs/helpers.js:14:16)\n    at Object.<anonymous> (/home/hz/Project/Locker2/LockerSystem-laundryKaki/client.js:6:15)\n    at Module._compile (internal/modules/cjs/loader.js:816:30)\n    at Object.Module._extensions..js (internal/modules/cjs/loader.js:827:10)\n    at Module.load (internal/modules/cjs/loader.js:685:32)\n    at Function.Module._load (internal/modules/cjs/loader.js:620:12)\n    at Function.Module.runMain (internal/modules/cjs/loader.js:877:12)\n    at internal/main/run_main_module.js:21:11","stack":"ReferenceError: S is not defined\n    at Object.<anonymous> (/home/hz/Project/Locker2/LockerSystem-laundryKaki/config/winston.js:29:1)\n    at Module._compile (internal/modules/cjs/loader.js:816:30)\n    at Object.Module._extensions..js (internal/modules/cjs/loader.js:827:10)\n    at Module.load (internal/modules/cjs/loader.js:685:32)\n    at Function.Module._load (internal/modules/cjs/loader.js:620:12)\n    at Module.require (internal/modules/cjs/loader.js:723:19)\n    at require (internal/modules/cjs/helpers.js:14:16)\n    at Object.<anonymous> (/home/hz/Project/Locker2/LockerSystem-laundryKaki/client.js:6:15)\n    at Module._compile (internal/modules/cjs/loader.js:816:30)\n    at Object.Module._extensions..js (internal/modules/cjs/loader.js:827:10)\n    at Module.load (internal/modules/cjs/loader.js:685:32)\n    at Function.Module._load (internal/modules/cjs/loader.js:620:12)\n    at Function.Module.runMain (internal/modules/cjs/loader.js:877:12)\n    at internal/main/run_main_module.js:21:11","exception":true,"date":"Tue Jun 02 2020 16:18:22 GMT+0800 (Malaysia Time)","process":{"pid":5800,"uid":1000,"gid":1000,"cwd":"/home/hz/Project/Locker2/LockerSystem-laundryKaki","execPath":"/usr/bin/node","version":"v11.15.0","argv":["/usr/bin/node","/home/hz/Project/Locker2/LockerSystem-laundryKaki/client.js"],"memoryUsage":{"rss":68866048,"heapTotal":37449728,"heapUsed":19978176,"external":18601288}},"os":{"loadavg":[1.28564453125,1.55078125,1.28125],"uptime":2859},"trace":[{"column":1,"file":"/home/hz/Project/Locker2/LockerSystem-laundryKaki/config/winston.js","function":null,"line":29,"method":null,"native":false},{"column":30,"file":"internal/modules/cjs/loader.js","function":"Module._compile","line":816,"method":"_compile","native":false},{"column":10,"file":"internal/modules/cjs/loader.js","function":"Module._extensions..js","line":827,"method":".js","native":false},{"column":32,"file":"internal/modules/cjs/loader.js","function":"Module.load","line":685,"method":"load","native":false},{"column":12,"file":"internal/modules/cjs/loader.js","function":"Module._load","line":620,"method":"_load","native":false},{"column":19,"file":"internal/modules/cjs/loader.js","function":"Module.require","line":723,"method":"require","native":false},{"column":16,"file":"internal/modules/cjs/helpers.js","function":"require","line":14,"method":null,"native":false},{"column":15,"file":"/home/hz/Project/Locker2/LockerSystem-laundryKaki/client.js","function":null,"line":6,"method":null,"native":false},{"column":30,"file":"internal/modules/cjs/loader.js","function":"Module._compile","line":816,"method":"_compile","native":false},{"column":10,"file":"internal/modules/cjs/loader.js","function":"Module._extensions..js","line":827,"method":".js","native":false},{"column":32,"file":"internal/modules/cjs/loader.js","function":"Module.load","line":685,"method":"load","native":false},{"column":12,"file":"internal/modules/cjs/loader.js","function":"Module._load","line":620,"method":"_load","native":false},{"column":12,"file":"internal/modules/cjs/loader.js","function":"Module.runMain","line":877,"method":"runMain","native":false},{"column":11,"file":"internal/main/run_main_module.js","function":null,"line":21,"method":null,"native":false}]}
+{"error":{},"level":"error","message":"uncaughtException: S is not defined\nReferenceError: S is not defined\n    at Object.<anonymous> (/home/hz/Project/Locker2/LockerSystem-laundryKaki/client.js:7:1)\n    at Module._compile (internal/modules/cjs/loader.js:816:30)\n    at Object.Module._extensions..js (internal/modules/cjs/loader.js:827:10)\n    at Module.load (internal/modules/cjs/loader.js:685:32)\n    at Function.Module._load (internal/modules/cjs/loader.js:620:12)\n    at Function.Module.runMain (internal/modules/cjs/loader.js:877:12)\n    at internal/main/run_main_module.js:21:11","stack":"ReferenceError: S is not defined\n    at Object.<anonymous> (/home/hz/Project/Locker2/LockerSystem-laundryKaki/client.js:7:1)\n    at Module._compile (internal/modules/cjs/loader.js:816:30)\n    at Object.Module._extensions..js (internal/modules/cjs/loader.js:827:10)\n    at Module.load (internal/modules/cjs/loader.js:685:32)\n    at Function.Module._load (internal/modules/cjs/loader.js:620:12)\n    at Function.Module.runMain (internal/modules/cjs/loader.js:877:12)\n    at internal/main/run_main_module.js:21:11","exception":true,"date":"Tue Jun 02 2020 16:19:24 GMT+0800 (Malaysia Time)","process":{"pid":5835,"uid":1000,"gid":1000,"cwd":"/home/hz/Project/Locker2/LockerSystem-laundryKaki","execPath":"/usr/bin/node","version":"v11.15.0","argv":["/usr/bin/node","/home/hz/Project/Locker2/LockerSystem-laundryKaki/client.js"],"memoryUsage":{"rss":69750784,"heapTotal":37449728,"heapUsed":19821936,"external":18576246}},"os":{"loadavg":[1.03125,1.4443359375,1.259765625],"uptime":2921},"trace":[{"column":1,"file":"/home/hz/Project/Locker2/LockerSystem-laundryKaki/client.js","function":null,"line":7,"method":null,"native":false},{"column":30,"file":"internal/modules/cjs/loader.js","function":"Module._compile","line":816,"method":"_compile","native":false},{"column":10,"file":"internal/modules/cjs/loader.js","function":"Module._extensions..js","line":827,"method":".js","native":false},{"column":32,"file":"internal/modules/cjs/loader.js","function":"Module.load","line":685,"method":"load","native":false},{"column":12,"file":"internal/modules/cjs/loader.js","function":"Module._load","line":620,"method":"_load","native":false},{"column":12,"file":"internal/modules/cjs/loader.js","function":"Module.runMain","line":877,"method":"runMain","native":false},{"column":11,"file":"internal/main/run_main_module.js","function":null,"line":21,"method":null,"native":false}]}
+Tue, 02 Jun 2020 08:52:44 GMT | INFO | app.log | Request recieved at /locker | data:{} | log_data:{} | 
+Tue, 02 Jun 2020 09:01:46 GMT | INFO | app.log | Request recieved at /locker | data:{} | log_data:{} | 
+Tue, 02 Jun 2020 09:01:48 GMT | ERROR | app.log | Retun error response | data:{"sucess":false,"message":"timeout in two seconds"} | log_data:{} | 
+Tue, 02 Jun 2020 09:38:35 GMT | INFO | app.log | Request recieved at /locker | data:{} | log_data:{} | 
+Tue, 02 Jun 2020 09:38:37 GMT | ERROR | app.log | Retun error response | data:{"sucess":false,"message":"timeout in two seconds"} | log_data:{} | 
+Tue, 02 Jun 2020 09:40:39 GMT | INFO | app.log | Request recieved at /locker | data:{} | 
+Tue, 02 Jun 2020 09:40:41 GMT | ERROR | app.log | Retun error response | data:{"sucess":false,"message":"timeout in two seconds"} | 
+Tue, 02 Jun 2020 09:40:45 GMT | ERROR | app.log | Retun error response | data:{"sucess":false,"message":"Client connection timeout. "} | 
+Tue, 02 Jun 2020 09:40:49 GMT | ERROR | app.log | Retun error response | data:{"sucess":false,"message":"Client connection timeout. "} | 
+Tue, 02 Jun 2020 09:42:46 GMT | ERROR | app.log | Retun error response | data:{"sucess":false,"message":"{\"errno\":\"ETIMEDOUT\",\"code\":\"ETIMEDOUT\",\"syscall\":\"connect\",\"address\":\"192.168.33.178\",\"port\":5000}"} | 
+Tue, 02 Jun 2020 09:42:48 GMT | ERROR | app.log | Retun error response | data:{"sucess":false,"message":"{\"errno\":\"ETIMEDOUT\",\"code\":\"ETIMEDOUT\",\"syscall\":\"connect\",\"address\":\"192.168.33.178\",\"port\":5000}"} | 
+Tue, 02 Jun 2020 10:19:24 GMT | ERROR | uncaughtException: Logger is not a constructor
+TypeError: Logger is not a constructor
+    at Object.<anonymous> (/home/hz/Project/Locker2/LockerSystem-laundryKaki/LockerController.js:8:16)
+    at Module._compile (internal/modules/cjs/loader.js:816:30)
+    at Object.Module._extensions..js (internal/modules/cjs/loader.js:827:10)
+    at Module.load (internal/modules/cjs/loader.js:685:32)
+    at Function.Module._load (internal/modules/cjs/loader.js:620:12)
+    at Module.require (internal/modules/cjs/loader.js:723:19)
+    at require (internal/modules/cjs/helpers.js:14:16)
+    at Object.<anonymous> (/home/hz/Project/Locker2/LockerSystem-laundryKaki/route.js:7:24)
+    at Module._compile (internal/modules/cjs/loader.js:816:30)
+    at Object.Module._extensions..js (internal/modules/cjs/loader.js:827:10)
+    at Module.load (internal/modules/cjs/loader.js:685:32)
+    at Function.Module._load (internal/modules/cjs/loader.js:620:12)
+    at Module.require (internal/modules/cjs/loader.js:723:19)
+    at require (internal/modules/cjs/helpers.js:14:16)
+    at Object.<anonymous> (/home/hz/Project/Locker2/LockerSystem-laundryKaki/client.js:4:14)
+    at Module._compile (internal/modules/cjs/loader.js:816:30) | 
+Tue, 02 Jun 2020 10:20:19 GMT | ERROR | uncaughtException: Logger is not a constructor
+TypeError: Logger is not a constructor
+    at Object.<anonymous> (/home/hz/Project/Locker2/LockerSystem-laundryKaki/LockerController.js:8:16)
+    at Module._compile (internal/modules/cjs/loader.js:816:30)
+    at Object.Module._extensions..js (internal/modules/cjs/loader.js:827:10)
+    at Module.load (internal/modules/cjs/loader.js:685:32)
+    at Function.Module._load (internal/modules/cjs/loader.js:620:12)
+    at Module.require (internal/modules/cjs/loader.js:723:19)
+    at require (internal/modules/cjs/helpers.js:14:16)
+    at Object.<anonymous> (/home/hz/Project/Locker2/LockerSystem-laundryKaki/route.js:7:24)
+    at Module._compile (internal/modules/cjs/loader.js:816:30)
+    at Object.Module._extensions..js (internal/modules/cjs/loader.js:827:10)
+    at Module.load (internal/modules/cjs/loader.js:685:32)
+    at Function.Module._load (internal/modules/cjs/loader.js:620:12)
+    at Module.require (internal/modules/cjs/loader.js:723:19)
+    at require (internal/modules/cjs/helpers.js:14:16)
+    at Object.<anonymous> (/home/hz/Project/Locker2/LockerSystem-laundryKaki/client.js:4:14)
+    at Module._compile (internal/modules/cjs/loader.js:816:30) | 
+Tue, 02 Jun 2020 10:22:21 GMT | ERROR | uncaughtException: Logger is not a constructor
+TypeError: Logger is not a constructor
+    at Object.<anonymous> (/home/hz/Project/Locker2/LockerSystem-laundryKaki/LockerController.js:8:16)
+    at Module._compile (internal/modules/cjs/loader.js:816:30)
+    at Object.Module._extensions..js (internal/modules/cjs/loader.js:827:10)
+    at Module.load (internal/modules/cjs/loader.js:685:32)
+    at Function.Module._load (internal/modules/cjs/loader.js:620:12)
+    at Module.require (internal/modules/cjs/loader.js:723:19)
+    at require (internal/modules/cjs/helpers.js:14:16)
+    at Object.<anonymous> (/home/hz/Project/Locker2/LockerSystem-laundryKaki/route.js:7:24)
+    at Module._compile (internal/modules/cjs/loader.js:816:30)
+    at Object.Module._extensions..js (internal/modules/cjs/loader.js:827:10)
+    at Module.load (internal/modules/cjs/loader.js:685:32)
+    at Function.Module._load (internal/modules/cjs/loader.js:620:12)
+    at Module.require (internal/modules/cjs/loader.js:723:19)
+    at require (internal/modules/cjs/helpers.js:14:16)
+    at Object.<anonymous> (/home/hz/Project/Locker2/LockerSystem-laundryKaki/client.js:4:14)
+    at Module._compile (internal/modules/cjs/loader.js:816:30) | 
+Tue, 02 Jun 2020 15:31:55 GMT | ERROR | uncaughtException: Logger is not a constructor
+TypeError: Logger is not a constructor
+    at Object.<anonymous> (/home/hz/Project/Locker2/LockerSystem-laundryKaki/LockerController.js:8:16)
+    at Module._compile (internal/modules/cjs/loader.js:816:30)
+    at Object.Module._extensions..js (internal/modules/cjs/loader.js:827:10)
+    at Module.load (internal/modules/cjs/loader.js:685:32)
+    at Function.Module._load (internal/modules/cjs/loader.js:620:12)
+    at Module.require (internal/modules/cjs/loader.js:723:19)
+    at require (internal/modules/cjs/helpers.js:14:16)
+    at Object.<anonymous> (/home/hz/Project/Locker2/LockerSystem-laundryKaki/route.js:7:24)
+    at Module._compile (internal/modules/cjs/loader.js:816:30)
+    at Object.Module._extensions..js (internal/modules/cjs/loader.js:827:10)
+    at Module.load (internal/modules/cjs/loader.js:685:32)
+    at Function.Module._load (internal/modules/cjs/loader.js:620:12)
+    at Module.require (internal/modules/cjs/loader.js:723:19)
+    at require (internal/modules/cjs/helpers.js:14:16)
+    at Object.<anonymous> (/home/hz/Project/Locker2/LockerSystem-laundryKaki/client.js:4:14)
+    at Module._compile (internal/modules/cjs/loader.js:816:30) | 
+Wed, 03 Jun 2020 02:15:59 GMT | ERROR | uncaughtException: Logger is not a constructor
+TypeError: Logger is not a constructor
+    at Object.<anonymous> (/home/hz/Project/Locker2/LockerSystem-laundryKaki/LockerController.js:8:16)
+    at Module._compile (internal/modules/cjs/loader.js:816:30)
+    at Object.Module._extensions..js (internal/modules/cjs/loader.js:827:10)
+    at Module.load (internal/modules/cjs/loader.js:685:32)
+    at Function.Module._load (internal/modules/cjs/loader.js:620:12)
+    at Module.require (internal/modules/cjs/loader.js:723:19)
+    at require (internal/modules/cjs/helpers.js:14:16)
+    at Object.<anonymous> (/home/hz/Project/Locker2/LockerSystem-laundryKaki/route.js:8:24)
+    at Module._compile (internal/modules/cjs/loader.js:816:30)
+    at Object.Module._extensions..js (internal/modules/cjs/loader.js:827:10)
+    at Module.load (internal/modules/cjs/loader.js:685:32)
+    at Function.Module._load (internal/modules/cjs/loader.js:620:12)
+    at Module.require (internal/modules/cjs/loader.js:723:19)
+    at require (internal/modules/cjs/helpers.js:14:16)
+    at Object.<anonymous> (/home/hz/Project/Locker2/LockerSystem-laundryKaki/client.js:4:14)
+    at Module._compile (internal/modules/cjs/loader.js:816:30) | 
+Wed, 03 Jun 2020 02:16:40 GMT | ERROR | Retun error responseClient connection timeout.  | 
+Wed, 03 Jun 2020 02:18:13 GMT | ERROR | Retun error responseClient connection timeout.  | 
+Wed, 03 Jun 2020 02:20:13 GMT | ERROR | Retun error response{"errno":"ETIMEDOUT","code":"ETIMEDOUT","syscall":"connect","address":"192.168.33.178","port":5000} | 
+Wed, 03 Jun 2020 02:22:27 GMT | ERROR | Retun error response Client connection timeout.  | 
+Wed, 03 Jun 2020 02:23:28 GMT | ERROR | Retun error response Client connection timeout.  | 
+Wed, 03 Jun 2020 02:24:27 GMT | ERROR | Retun error response{"errno":"ETIMEDOUT","code":"ETIMEDOUT","syscall":"connect","address":"192.168.33.178","port":5000} | 
+{"sucess":false,"message":"Retun error response Client connection timeout. ","level":"error"}
+{"sucess":false,"message":"Retun error response Client connection timeout. ","level":"error"}
+{"sucess":false,"message":"Retun error response{\"errno\":\"ETIMEDOUT\",\"code\":\"ETIMEDOUT\",\"syscall\":\"connect\",\"address\":\"192.168.33.178\",\"port\":5000}","level":"error"}
+{"sucess":false,"message":"Retun error response{\"errno\":\"ETIMEDOUT\",\"code\":\"ETIMEDOUT\",\"syscall\":\"connect\",\"address\":\"192.168.33.178\",\"port\":5000}","level":"error"}
+{"sucess":false,"message":"Retun error response Client connection timeout. ","level":"error"}
+{"sucess":false,"message":"Retun error response Client connection timeout. ","level":"error"}
+{"sucess":false,"message":"Retun error response{\"errno\":\"ETIMEDOUT\",\"code\":\"ETIMEDOUT\",\"syscall\":\"connect\",\"address\":\"192.168.33.178\",\"port\":5000}","level":"error"}
+{"sucess":false,"message":"Retun error response Client connection timeout. ","level":"error"}
+{"sucess":false,"message":"Retun error response Client connection timeout. ","level":"error"}
+{"message":"/api/v1/lockers/GetAll - GET - ::ffff:127.0.0.1","level":"error"}
+{"level":"info","message":"Request recieved at /locker"}
+{"sucess":false,"message":"Retun error responsetimeout in two seconds","level":"error"}
+{"sucess":false,"message":"Retun error response Client connection timeout. ","level":"error"}
+{"sucess":false,"message":"Retun error response Client connection timeout. ","level":"error"}
+Wed, 03 Jun 2020 02:39:57 GMT | ERROR | Retun error response Client connection timeout.  | 
+Wed, 03 Jun 2020 02:40:10 GMT | ERROR | /api/v1/lockers/GetAll - GET - ::ffff:127.0.0.1 | 
+Wed, 03 Jun 2020 02:40:10 GMT | INFO | Request recieved at /locker | 
+Wed, 03 Jun 2020 02:40:12 GMT | ERROR | Retun error responsetimeout in two seconds | 
+Wed, 03 Jun 2020 02:40:13 GMT | ERROR | Retun error response Client connection timeout.  | 
+Wed, 03 Jun 2020 02:40:20 GMT | ERROR | Retun error response Client connection timeout.  | 
+Wed, 03 Jun 2020 02:41:58 GMT | ERROR | Retun error response{"errno":"ETIMEDOUT","code":"ETIMEDOUT","syscall":"connect","address":"192.168.33.178","port":5000} | 
+Wed, 03 Jun 2020 02:42:12 GMT | ERROR | Retun error response{"errno":"ETIMEDOUT","code":"ETIMEDOUT","syscall":"connect","address":"192.168.33.178","port":5000} | 
+Wed, 03 Jun 2020 02:42:21 GMT | ERROR | Retun error response{"errno":"ETIMEDOUT","code":"ETIMEDOUT","syscall":"connect","address":"192.168.33.178","port":5000} | 
+Wed, 03 Jun 2020 02:45:43 GMT | ERROR | /api/v1/lockers/GetAll - GET - ::ffff:127.0.0.1 | 
+Wed, 03 Jun 2020 02:45:43 GMT | INFO | Request recieved at /locker | 
+Wed, 03 Jun 2020 02:45:45 GMT | ERROR | Retun error responsetimeout in two seconds | 
+Wed, 03 Jun 2020 02:45:47 GMT | ERROR | Retun error response Client connection timeout.  | 
+Wed, 03 Jun 2020 02:45:53 GMT | ERROR | Retun error response Client connection timeout.  | 
+Wed, 03 Jun 2020 02:47:48 GMT | ERROR | Retun error response{"errno":"ETIMEDOUT","code":"ETIMEDOUT","syscall":"connect","address":"192.168.33.178","port":5000} | 
+Wed, 03 Jun 2020 10:47:57 GMT | ERROR | /api/v1/lockers/GetAll - GET - ::ffff:127.0.0.1 | 
+Wed, 03 Jun 2020 10:47:57 GMT | INFO | Request recieved at /locker | 
+Wed, 03 Jun 2020 10:47:59 GMT | ERROR | Retun error responsetimeout in two seconds | 
+Wed, 03 Jun 2020 10:48:04 GMT | ERROR | Retun error response Client connection timeout.  | 
+Wed, 03 Jun 2020 10:48:07 GMT | ERROR | Retun error response Client connection timeout.  | 
+Wed, 03 Jun 2020 10:50:05 GMT | ERROR | Retun error response{"errno":"ETIMEDOUT","code":"ETIMEDOUT","syscall":"connect","address":"192.168.33.178","port":5000} | 
+Wed, 03 Jun 2020 10:50:07 GMT | ERROR | Retun error response{"errno":"ETIMEDOUT","code":"ETIMEDOUT","syscall":"connect","address":"192.168.33.178","port":5000} | 
+Wed Jun 03 2020 11:21:10 GMT+0800 (Malaysia Time) | ERROR | /api/v1/lockers/GetAll - GET - ::ffff:127.0.0.1 | 
+Wed Jun 03 2020 11:21:10 GMT+0800 (Malaysia Time) | INFO | Request recieved at /locker | 
+Wed Jun 03 2020 11:21:12 GMT+0800 (Malaysia Time) | ERROR | Retun error responsetimeout in two seconds | 
+Wed Jun 03 2020 11:21:17 GMT+0800 (Malaysia Time) | ERROR | Retun error response Client connection timeout.  | 
+Wed Jun 03 2020 11:21:20 GMT+0800 (Malaysia Time) | ERROR | Retun error response Client connection timeout.  | 
+Wed Jun 03 2020 11:23:18 GMT+0800 (Malaysia Time) | ERROR | Retun error response{"errno":"ETIMEDOUT","code":"ETIMEDOUT","syscall":"connect","address":"192.168.33.178","port":5000} | 
+Wed Jun 03 2020 11:23:20 GMT+0800 (Malaysia Time) | ERROR | Retun error response{"errno":"ETIMEDOUT","code":"ETIMEDOUT","syscall":"connect","address":"192.168.33.178","port":5000} | 
+Wed Jun 03 2020 11:30:18 GMT+0800 (Malaysia Time) | INFO | /api/v1/lockers/GetAll - GET - ::ffff:127.0.0.1 | 
+Wed Jun 03 2020 11:30:20 GMT+0800 (Malaysia Time) | ERROR | Retun error response timeout in two seconds | 
+Wed Jun 03 2020 11:30:22 GMT+0800 (Malaysia Time) | ERROR | Retun error response Client connection timeout.  | 
+Wed Jun 03 2020 11:30:27 GMT+0800 (Malaysia Time) | ERROR | Retun error responsetimeout in two seconds | 
+Wed Jun 03 2020 11:30:28 GMT+0800 (Malaysia Time) | ERROR | Retun error response Client connection timeout.  | 
+Wed Jun 03 2020 11:30:35 GMT+0800 (Malaysia Time) | ERROR | Retun error response Client connection timeout.  | 
+Wed Jun 03 2020 11:32:23 GMT+0800 (Malaysia Time) | ERROR | Retun error response{"errno":"ETIMEDOUT","code":"ETIMEDOUT","syscall":"connect","address":"192.168.33.178","port":5000} | 
+Wed Jun 03 2020 11:32:29 GMT+0800 (Malaysia Time) | ERROR | Retun error response{"errno":"ETIMEDOUT","code":"ETIMEDOUT","syscall":"connect","address":"192.168.33.178","port":5000} | 
+Wed Jun 03 2020 11:32:35 GMT+0800 (Malaysia Time) | ERROR | Retun error response{"errno":"ETIMEDOUT","code":"ETIMEDOUT","syscall":"connect","address":"192.168.33.178","port":5000} | 
+Wed Jun 03 2020 11:33:56 GMT+0800 (Malaysia Time) | ERROR | Retun error response Client connection timeout.  | 
+Wed Jun 03 2020 11:35:56 GMT+0800 (Malaysia Time) | ERROR | Retun error response{"errno":"ETIMEDOUT","code":"ETIMEDOUT","syscall":"connect","address":"192.168.33.178","port":5000} | 
+Wed Jun 03 2020 11:36:58 GMT+0800 (Malaysia Time) | ERROR | Retun error response Client connection timeout.  | 
+Wed Jun 03 2020 11:38:27 GMT+0800 (Malaysia Time) | INFO | ::ffff:127.0.0.1 - - [03/Jun/2020:03:38:27 +0000] "GET /locker HTTP/1.1" 404 145 "-" "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:76.0) Gecko/20100101 Firefox/76.0"
+ | 
+Wed Jun 03 2020 11:38:28 GMT+0800 (Malaysia Time) | INFO | ::ffff:127.0.0.1 - - [03/Jun/2020:03:38:28 +0000] "GET /locker HTTP/1.1" 404 145 "-" "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:76.0) Gecko/20100101 Firefox/76.0"
+ | 
+Wed Jun 03 2020 11:38:34 GMT+0800 (Malaysia Time) | ERROR | Retun error response Client connection timeout.  | 
+Wed Jun 03 2020 11:38:48 GMT+0800 (Malaysia Time) | INFO | ::ffff:127.0.0.1 - - [03/Jun/2020:03:38:48 +0000] "GET /lockers HTTP/1.1" 404 146 "-" "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:76.0) Gecko/20100101 Firefox/76.0"
+ | 
+Wed Jun 03 2020 11:54:28 GMT+0800 (Malaysia Time) | ERROR | Retun error response Client connection timeout.  | 
+Wed Jun 03 2020 11:54:38 GMT+0800 (Malaysia Time) | INFO | ::ffff:127.0.0.1 - - [03/Jun/2020:03:54:38 +0000] "GET /lockers HTTP/1.1" 404 146 "-" "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:76.0) Gecko/20100101 Firefox/76.0"
+ | 
