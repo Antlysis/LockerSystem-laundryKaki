@@ -49,6 +49,18 @@ router.use(morgan('combined', {
     }
 ));
 
+/*
+curl -i -X POST -H 'Content-Type:application/json' -d '{"Online": "Yes"}' "http://localhost:3000/api/v1/pingme" 
+
+*/
+router.post('/pingme', function(req,res) {
+    if (req.body.Online == "Yes") {
+        console.log("Its been called by Pinger")    
+    }
+    var msg = JSON.stringify({"status": "Online"});
+    res.status(200).send(msg)
+})
+
 // Error Handler
 // centralized error handler - note how it has four parameters
 router.use(function(err, req, res, next) {
