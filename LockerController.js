@@ -212,7 +212,8 @@ exports.command = asyncMiddleware(async (req, res, next) =>  {
                                 return true;                            
                             } else false;                    
                         });
-                        console.log("Locker result: "+ OMLocker);                    
+                        console.log("Locker result: "+ OMLocker);
+                        nodeClient = getConn('Node');                
                         lock(OPEN, OMLocker);                    
                         nodeClient.write(hexVal); 
                         await sleep(500);
@@ -226,7 +227,8 @@ exports.command = asyncMiddleware(async (req, res, next) =>  {
                     locker.brand = ApiBody.brand;
                     locker.location = ApiBody.location;
                     locker.locker = lockerStatus;
-
+                    
+                    nodeClient = getConn('Node');
                     CMD = 0x31;
                     ADDR = ApiBody.location;        
                     SUM = PREFIX + SUFFIX + CMD + ADDR;
