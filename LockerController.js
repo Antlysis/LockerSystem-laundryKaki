@@ -215,7 +215,7 @@ exports.command = asyncMiddleware(async (req, res, next) =>  {
                         console.log("Locker result: "+ OMLocker);                    
                         lock(OPEN, OMLocker);                    
                         nodeClient.write(hexVal); 
-                        await sleep(150);
+                        await sleep(250);
                     }         
                     
                     // res.status(200).send('Receive action code');
