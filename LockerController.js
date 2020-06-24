@@ -172,8 +172,8 @@ exports.command = asyncMiddleware(async (req, res, next) =>  {
                     console.log("Initiate OpenMultiple");
 
                     nodeClient = getConn('Node');
-                    lock(STATUS,0);                    
-                    nodeClient.write(hexVal);  
+                    // lock(STATUS,0);                    
+                    // nodeClient.write(hexVal);  
 
                     let status = false;
                     OnData.on('errorS', (data)=>{
@@ -213,7 +213,7 @@ exports.command = asyncMiddleware(async (req, res, next) =>  {
                             } else false;                    
                         });
                         console.log("Locker result: "+ OMLocker);
-                        nodeClient = getConn('Node');                
+                        // nodeClient = getConn('Node');                
                         lock(OPEN, OMLocker);                    
                         nodeClient.write(hexVal); 
                         await sleep(500);
@@ -227,7 +227,7 @@ exports.command = asyncMiddleware(async (req, res, next) =>  {
                     locker.brand = ApiBody.brand;
                     locker.location = ApiBody.location;
                     locker.locker = lockerStatus;
-                    
+
                     nodeClient = getConn('Node');
                     CMD = 0x31;
                     ADDR = ApiBody.location;        
