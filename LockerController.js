@@ -172,6 +172,7 @@ exports.command = asyncMiddleware(async (req, res, next) =>  {
                     console.log("Initiate OpenMultiple");
 
                     nodeClient = getConn('Node');
+                    await sleep(150);
                     // lock(STATUS,0);                    
                     // nodeClient.write(hexVal);  
 
@@ -216,7 +217,7 @@ exports.command = asyncMiddleware(async (req, res, next) =>  {
                         // nodeClient = getConn('Node');                
                         lock(OPEN, OMLocker);                    
                         nodeClient.write(hexVal); 
-                        await sleep(500);
+                        await sleep(150);
                     }         
                     
                     // res.status(200).send('Receive action code');
@@ -341,7 +342,7 @@ function getConn(connName){
         TCPConnectionFlag = true;
     });
 
-    client.setTimeout(10000);
+    client.setTimeout(1000);
     client.setEncoding('hex');
 
     // When receive server send back data.
