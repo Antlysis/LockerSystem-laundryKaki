@@ -226,6 +226,14 @@ exports.command = asyncMiddleware(async (req, res, next) =>  {
                     locker.brand = ApiBody.brand;
                     locker.location = ApiBody.location;
                     locker.locker = lockerStatus;
+
+                    CMD = 0x31;
+                    ADDR = ApiBody.location;        
+                    SUM = PREFIX + SUFFIX + CMD + ADDR;
+                    bytesToSend = [PREFIX, ADDR, CMD, SUFFIX, SUM];
+                    hexVal = new Uint8Array(bytesToSend);
+                    console.log(hexVal);
+                    nodeClient.write(hexVal);
                     // // save the contact and check for errors
                     // locker.save(function (err) {
                     //     res.status(200).send('Receive action code');
