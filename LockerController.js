@@ -77,7 +77,7 @@ exports.index = asyncMiddleware(async (req, res, next) => {
                             "sucess":false,
                             "message": " timeout in two seconds"
                         })
-                        res.status(502).send({error: 'timedout'})
+                        res.status(502).send({error: 'timedout, exceed time limit'})
                     }, 2000)
 
                     nodeClient = getConn('Node');
@@ -171,8 +171,8 @@ exports.command = asyncMiddleware(async (req, res, next) =>  {
                 if (ApiParameters.action_code == "Open" ){
                     console.log("Initiate OpenMultiple");
 
-                    nodeClient = getConn('Node');
-                    await sleep(150);
+                    // nodeClient = getConn('Node');
+                    // await sleep(150);
                     // lock(STATUS,0);                    
                     // nodeClient.write(hexVal);  
 
@@ -188,22 +188,26 @@ exports.command = asyncMiddleware(async (req, res, next) =>  {
                         if(status) return true;
                         // Clear the enevnt listener to void memory leaks
                         OnData.removeAllListeners('errorS'); 
-                        if (TCPConnectionFlag) {
-                            lock(STATUS,1);                    
-                            nodeClient.write(hexVal);                       
-                            res.status(200).send('Receive action code');
+                        // if (TCPConnectionFlag) {
+                            // lock(STATUS,1);                    
+                            // nodeClient.write(hexVal);                       
+                            res.status(200).json({
+                                status: "success",
+                                msg :'Receive action code'
+                            });
                             logger.info("Retun success response", {
-                                "sucess":true
+                                "sucess":true,
+                                "msg": "Command receive"
                             })
                             TCPConnectionFlag = false;
-                        }else{ 
-                            res.status(502).send({error: 'timedout'});
-                            TCPConnectionFlag = false;
-                            logger.error("Retun error response", {
-                                "sucess":false,
-                                "message": " timeout in two seconds"
-                            })
-                        }
+                        // }else{ 
+                        //     res.status(502).send({error: 'Timeout, connection is not established'});
+                        //     TCPConnectionFlag = false;
+                        //     logger.error("Retun error response", {
+                        //         "sucess":false,
+                        //         "message": " timeout in two seconds"
+                        //     })
+                        // }
                     }, 2000);
   
                     for (const property in ApiBody) {               
@@ -214,9 +218,9 @@ exports.command = asyncMiddleware(async (req, res, next) =>  {
                             } else false;                    
                         });
                         console.log("Locker result: "+ OMLocker);
-                        // nodeClient = getConn('Node');                
-                        lock(OPEN, OMLocker);                    
-                        nodeClient.write(hexVal); 
+                               
+                        // lock(OPEN, OMLocker);                    
+                        // nodeClient.write(hexVal); 
                         await sleep(150);
                     }         
                     
