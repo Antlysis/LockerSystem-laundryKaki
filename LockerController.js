@@ -62,7 +62,7 @@ exports.index = asyncMiddleware(async (req, res, next) => {
                         logger.error("Retun error response", {
                             "sucess":false
                         })
-                        res.status(501).send({error: 'timedout', message: data})
+                        res.status(501).send({error: 'TCP server error', message: data})
                         // console.log("error")                                  
                     })
 
