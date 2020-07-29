@@ -188,9 +188,9 @@ exports.command = asyncMiddleware(async (req, res, next) =>  {
                         if(status) return true;
                         // Clear the enevnt listener to void memory leaks
                         OnData.removeAllListeners('errorS'); 
-                        // if (TCPConnectionFlag) {
-                            // lock(STATUS,1);                    
-                            // nodeClient.write(hexVal);                       
+                        if (TCPConnectionFlag) {
+                            lock(STATUS,1);                    
+                            nodeClient.write(hexVal);                       
                             res.status(200).json({
                                 status: "success",
                                 msg :'Receive action code'
@@ -200,14 +200,14 @@ exports.command = asyncMiddleware(async (req, res, next) =>  {
                                 "msg": "Command receive"
                             })
                             TCPConnectionFlag = false;
-                        // }else{ 
-                        //     res.status(502).send({error: 'Timeout, connection is not established'});
-                        //     TCPConnectionFlag = false;
-                        //     logger.error("Retun error response", {
-                        //         "sucess":false,
-                        //         "message": " timeout in two seconds"
-                        //     })
-                        // }
+                        }else{ 
+                            res.status(502).send({error: 'Timeout, connection is not established'});
+                            TCPConnectionFlag = false;
+                            logger.error("Retun error response", {
+                                "sucess":false,
+                                "message": " timeout in two seconds"
+                            })
+                        }
                     }, 2000);
   
                     for (const property in ApiBody) {               
