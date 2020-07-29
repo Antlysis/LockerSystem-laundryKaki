@@ -171,7 +171,7 @@ exports.command = asyncMiddleware(async (req, res, next) =>  {
                 if (ApiParameters.action_code == "Open" ){
                     console.log("Initiate OpenMultiple");
 
-                    // nodeClient = getConn('Node');
+                    nodeClient = getConn('Node');
                     // await sleep(150);
                     // lock(STATUS,0);                    
                     // nodeClient.write(hexVal);  
@@ -219,8 +219,8 @@ exports.command = asyncMiddleware(async (req, res, next) =>  {
                         });
                         console.log("Locker result: "+ OMLocker);
                                
-                        // lock(OPEN, OMLocker);                    
-                        // nodeClient.write(hexVal); 
+                        lock(OPEN, OMLocker);                    
+                        nodeClient.write(hexVal); 
                         await sleep(150);
                     }         
                     
@@ -372,7 +372,7 @@ function getConn(connName){
 
     client.on('timeout', function () {
         msg = ' Client connection timeout. ';
-        // OnData.emit('errorS', msg);
+        OnData.emit('errorS', msg);
         TCPConnectionFlag = false;
         logger.error("Retun error response", {
             "sucess":false,
