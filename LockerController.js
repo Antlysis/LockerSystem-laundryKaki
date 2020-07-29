@@ -372,7 +372,7 @@ function getConn(connName){
 
     client.on('timeout', function () {
         msg = ' Client connection timeout. ';
-        OnData.emit('errorS', msg);
+        // OnData.emit('errorS', msg);
         TCPConnectionFlag = false;
         logger.error("Retun error response", {
             "sucess":false,
