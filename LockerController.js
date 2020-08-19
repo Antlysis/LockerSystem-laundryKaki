@@ -56,13 +56,13 @@ exports.index = asyncMiddleware(async (req, res, next) => {
                         // console.log("code")                      
                     });
                     OnData.once('errorS', (data)=>{
-                        // status = true;
+                        status = true;
                         OnData.removeAllListeners('errorS');
                         OnData.removeAllListeners('code');
                         logger.error("Retun error response", {
                             "sucess":false
                         })
-                        // res.status(501).send({error: 'TCP server error', message: data + " Please call again after 5 seconds"})
+                        res.status(501).send({error: 'TCP server error', message: data + " Please call again after 5 seconds"})
                         // console.log("error")                                  
                     })
 
