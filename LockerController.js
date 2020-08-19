@@ -39,7 +39,7 @@ exports.index = asyncMiddleware(async (req, res, next) => {
                 console.log(ApiParameters);
                 if (ApiParameters.action_code == "GetAll"){
                     console.log("Initiate GetAll");
-                    // nodeClient = getConn('Node');
+                    nodeClient = getConn('Node');
                     // lock(STATUS,5);
                     // nodeClient.write(hexVal);                                  
                     // AllLocker = await getAllLocker();                     
@@ -56,7 +56,7 @@ exports.index = asyncMiddleware(async (req, res, next) => {
                         // console.log("code")                      
                     });
                     OnData.once('errorS', (data)=>{
-                        status = true;
+                        // status = true;
                         OnData.removeAllListeners('errorS');
                         OnData.removeAllListeners('code');
                         logger.error("Retun error response", {
@@ -80,7 +80,7 @@ exports.index = asyncMiddleware(async (req, res, next) => {
                         res.status(502).send({error: 'timedout, exceed time limit'})
                     }, 2000)
 
-                    nodeClient = getConn('Node');
+                    // nodeClient = getConn('Node');
                     lock(STATUS,1);                    
                     nodeClient.write(hexVal); 
 
